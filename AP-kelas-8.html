@@ -25,33 +25,51 @@
         
         /* PENGATURAN CETAK / PRINT SUPER RAPI */
         @media print {
-            /* Wajib: Mencegah elemen terpotong setengah halaman menghilang (mengamankan overflow) */
-            * { overflow: visible !important; }
+            /* 1. Pastikan warna dan background dicetak persis seperti di web */
+            * { 
+                -webkit-print-color-adjust: exact !important; 
+                print-color-adjust: exact !important; 
+                overflow: visible !important; 
+            }
             
-            /* Sembunyikan elemen non-cetak (seperti tombol print) */
+            body, html {
+                background-color: #f1f5f9 !important;
+            }
+            
+            /* Sembunyikan elemen non-cetak */
             .no-print { display: none !important; }
             
             /* Pemecah halaman manual */
-            .print-page-break { page-break-before: always !important; break-before: page !important; }
-            
-            /* 1. Cegah judul tertinggal sendirian di akhir halaman! (Tarik ke halaman berikutnya jika isinya pindah) */
-            h1, h2, h3, h4, h5 { 
-                page-break-after: avoid !important; 
-                break-after: avoid !important; 
+            .print-page-break { 
+                page-break-before: always !important; 
+                break-before: page !important; 
             }
             
-            /* 2. Hanya lindungi elemen kecil ini yang benar-benar tidak boleh terpotong tengahnya */
-            img, tr, th, td { 
+            /* 2. Cegah judul tertinggal sendirian di akhir halaman */
+            h1, h2, h3, h4, h5, h6 { 
+                page-break-after: avoid !important; 
+                break-after: avoid !important; 
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+            }
+            
+            /* 3. Lindungi elemen gambar, tabel, dan grup khusus agar tidak terbelah */
+            .avoid-break, img, table, tr, th, td, li { 
+                page-break-inside: avoid !important; 
+                break-inside: avoid !important; 
+                display: block !important; /* Paksa blok agar browser mudah menghitung batasnya */
+            }
+
+            /* 4. FIX BUG GOOGLE CHROME: Lindungi elemen di dalam Grid/Flex agar tidak terpotong */
+            .grid > div, .flex > div, .space-y-4 > div, .space-y-5 > div, .space-y-6 > div {
                 page-break-inside: avoid !important; 
                 break-inside: avoid !important; 
             }
-            
-            /* KITA BIARKAN SELURUH KOTAK, BAYANGAN (SHADOW), DAN WARNA TETAP ADA SEPERTI DI HTML! */
         }
     </style>
     <style id="print-page-style">
         @media print {
-            @page { size: A4 portrait; margin: 1.2cm; }
+            @page { size: A4 portrait; margin: 10mm; }
         }
     </style>
 </head>
@@ -262,7 +280,7 @@
                     <p class="text-sm">NIP. 196803151992032011</p>
                 </div>
                 <div>
-                    <p class="mb-20">Palembang, 30 April 2026<br>Guru Mata Pelajaran</p>
+                    <p class="mb-20">Palembang, 21 Februari 2026<br>Guru Mata Pelajaran</p>
                     <p class="font-bold underline">Aris Bermansyah, S.Kom</p>
                     <p class="text-sm">NIP. 199611142024211010</p>
                 </div>
@@ -570,12 +588,13 @@
         function printDocument(orientation) {
             // Mengubah CSS @page size secara dinamis berdasarkan orientasi tombol yang diklik
             const styleTag = document.getElementById('print-page-style');
-            styleTag.innerHTML = `@media print { @page { size: A4 ${orientation}; margin: 1.2cm; } }`;
+            styleTag.innerHTML = `@media print { @page { size: A4 ${orientation}; margin: 10mm; } }`;
             
-            // Jeda singkat agar browser sempat memproses CSS baru sebelum membuka dialog cetak
+            // JEDA DITAMBAHKAN MENJADI 800ms (0.8 detik)
+            // Ini memberi waktu bagi Github Pages memuat gambar & layout sebelum Chrome memotong halaman
             setTimeout(() => {
                 window.print();
-            }, 100);
+            }, 800);
         }
     </script>
 </body>
