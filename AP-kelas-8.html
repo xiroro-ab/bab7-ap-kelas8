@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PPM Informatika - Algoritma & Pemrograman</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #f1f5f9; 
+            color: #334155; 
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+        h1, h2, h3, h4, h5 { font-family: 'Poppins', sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #0284c7 0%, #3b82f6 100%); }
+        .card-hover { transition: all 0.3s ease; }
+        .card-hover:hover { transform: translateY(-3px); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1); }
+        .badge-joyful { background-color: #fef08a; color: #854d0e; }
+        .badge-mindful { background-color: #bfdbfe; color: #1e40af; }
+        .badge-meaningful { background-color: #bbf7d0; color: #166534; }
+        
+        /* PENGATURAN CETAK / PRINT SUPER RAPI */
+        @media print {
+            /* Memaksa semua elemen yang 'overflow-hidden' menjadi 'visible' agar teks tidak kepotong di akhir halaman */
+            * { overflow: visible !important; }
+            
+            body { background-color: white !important; }
+            .no-print { display: none !important; }
+            
+            /* Menghilangkan bayangan dan menyesuaikan border untuk print */
+            .card-hover, .shadow-md, .shadow-sm, .shadow-lg { 
+                box-shadow: none !important; 
+                border: 1px solid #cbd5e1 !important; 
+            }
+            
+            .print-page-break { page-break-before: always !important; break-before: page !important; }
+            
+            /* Mencegah terpotong HANYA pada elemen kecil (judul, gambar, baris tabel). 
+               JANGAN pakaikan ini di div/section besar agar tidak ada halaman kosong! */
+            h1, h2, h3, h4, h5, img, tr, th, td, .avoid-break { 
+                page-break-inside: avoid !important; 
+                break-inside: avoid !important; 
+            }
+
+            /* Beri jarak antar seksi di kertas */
+            section { margin-bottom: 2cm !important; }
+            
+            /* Memastikan warna background utama tetap solid di cetakan */
+            .gradient-bg { background: #0284c7 !important; color: white !important; }
+            .bg-slate-800 { background-color: #1e293b !important; color: white !important; }
+        }
+    </style>
+    <style id="print-page-style">
+        @media print {
+            @page { size: A4 portrait; margin: 1.2cm; }
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-blue-200 selection:text-blue-900">
+
+    <!-- Header Section -->
+    <header class="gradient-bg text-white py-10 px-6 relative overflow-hidden shadow-lg avoid-break">
+        <div class="absolute top-0 right-0 opacity-10 pointer-events-none">
+            <svg width="300" height="300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+        </div>
+        <div class="max-w-5xl mx-auto relative z-10">
+            <div class="flex items-center gap-4 mb-4">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/9/9c/Logo_of_Ministry_of_Education_and_Culture_of_Republic_of_Indonesia.svg" alt="" class="w-14 h-14 bg-white/20 p-2 rounded-full backdrop-blur-sm">
+                <div class="inline-block px-3 py-1 bg-white/20 rounded-full text-xs font-bold tracking-wider border border-white/30 backdrop-blur-sm">
+                    KURIKULUM MERDEKA
+                </div>
+            </div>
+            <h1 class="text-3xl md:text-4xl font-bold mb-2">PERENCANAAN PEMBELAJARAN MENDALAM (PPM)</h1>
+            <p class="text-lg md:text-xl text-blue-100 mb-6 font-light">Modul Ajar Informatika - Algoritma & Pemrograman</p>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm bg-white/10 p-5 rounded-xl backdrop-blur-sm border border-white/20">
+                <div><p class="text-blue-200 uppercase text-[10px] font-bold">Nama Penyusun</p><p class="font-medium">Aris Bermansyah, S.Kom</p></div>
+                <div><p class="text-blue-200 uppercase text-[10px] font-bold">Institusi</p><p class="font-medium">SMP Negeri 58 Palembang</p></div>
+                <div><p class="text-blue-200 uppercase text-[10px] font-bold">Tahun</p><p class="font-medium">2026</p></div>
+                <div><p class="text-blue-200 uppercase text-[10px] font-bold">Kelas / Fase</p><p class="font-medium">VIII / D</p></div>
+                <div><p class="text-blue-200 uppercase text-[10px] font-bold">Semester</p><p class="font-medium">Genap</p></div>
+                <div><p class="text-blue-200 uppercase text-[10px] font-bold">Topik</p><p class="font-medium">Algoritma Pemrograman</p></div>
+                <div><p class="text-blue-200 uppercase text-[10px] font-bold">Alokasi Waktu</p><p class="font-medium">2 x 40 menit</p></div>
+                <div><p class="text-blue-200 uppercase text-[10px] font-bold">Elemen</p><p class="font-medium">Algoritma & Pemrograman</p></div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto p-6 -mt-4 relative z-20 space-y-6">
+        
+        <!-- I. IDENTIFIKASI -->
+        <section class="bg-white rounded-xl shadow-md p-8 border-t-4 border-blue-500 card-hover">
+            <h2 class="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-2"><i data-lucide="users" class="text-blue-500"></i> I. IDENTIFIKASI</h2>
+            <div class="space-y-5">
+                <div>
+                    <h3 class="font-bold text-slate-700 flex items-center gap-2 mb-2"><span class="w-2 h-2 bg-blue-500 rounded-full"></span> Peserta Didik:</h3>
+                    <p class="text-sm text-slate-600 pl-4 border-l-2 border-slate-200">Peserta didik kelas 8 umumnya sangat menyukai game atau animasi, namun sebagian besar belum mengenal bahasa pemrograman atau antarmuka <em>Scratch</em>. Mereka terbiasa sebagai penikmat teknologi, bukan pembuat. Gaya belajar mereka membutuhkan visualisasi langsung (<em>real-time feedback</em>) di mana setiap instruksi logika yang mereka susun dapat langsung terlihat hasilnya pada layar.</p>
+                </div>
+                <div>
+                    <h3 class="font-bold text-slate-700 flex items-center gap-2 mb-2"><span class="w-2 h-2 bg-blue-500 rounded-full"></span> Materi Pelajaran:</h3>
+                    <ol class="list-decimal pl-8 text-sm text-slate-600 space-y-1">
+                        <li>Konsep dasar algoritma (urutan instruksi logis).</li>
+                        <li>Pengenalan antarmuka <em>Scratch</em> (Stage, Sprite, Blocks Palette, Scripts Area).</li>
+                        <li>Menyusun blok pemrograman visual dasar: <em>Events</em> (kapan program dimulai), <em>Motion</em> (gerakan dasar), dan <em>Looks</em> (tampilan/pesan teks).</li>
+                    </ol>
+                </div>
+                <div>
+                    <h3 class="font-bold text-slate-700 flex items-center gap-2 mb-2"><span class="w-2 h-2 bg-blue-500 rounded-full"></span> Dimensi Profil Pelajar Pancasila:</h3>
+                    <ol class="list-decimal pl-8 text-sm text-slate-600 space-y-1">
+                        <li><strong>Bernalar Kritis:</strong> Mampu menerjemahkan logika langkah demi langkah (algoritma) ke dalam blok visual yang tepat agar objek dapat bergerak sesuai keinginan.</li>
+                        <li><strong>Gotong Royong:</strong> Berkolaborasi dalam kelompok kecil untuk bereksperimen dan memecahkan <em>bug</em> (kesalahan susunan blok) bersama.</li>
+                        <li><strong>Kreatif:</strong> Menghasilkan animasi gerakan karakter (<em>sprite</em>) sederhana dengan modifikasi visual buatan sendiri.</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- II. DESAIN PEMBELAJARAN -->
+        <section class="bg-white rounded-xl shadow-md p-8 border-t-4 border-indigo-500 card-hover">
+            <h2 class="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-2"><i data-lucide="layout-template" class="text-indigo-500"></i> II. DESAIN PEMBELAJARAN</h2>
+            <div class="grid md:grid-cols-2 gap-6 text-sm">
+                <div class="space-y-4">
+                    <div class="avoid-break">
+                        <h3 class="font-bold text-indigo-700 bg-indigo-50 px-3 py-1 rounded">Capaian Pembelajaran</h3>
+                        <p class="mt-2 text-slate-600">Pada akhir fase D, peserta didik mampu memahami objek-objek dan instruksi dalam sebuah lingkungan pemrograman blok (visual) untuk mengembangkan program visual sederhana berdasarkan contoh-contoh yang diberikan.</p>
+                    </div>
+                    <div class="avoid-break">
+                        <h3 class="font-bold text-indigo-700 bg-indigo-50 px-3 py-1 rounded">Lintas Disiplin Ilmu</h3>
+                        <ul class="list-disc pl-5 mt-2 text-slate-600">
+                            <li><strong>Bahasa Inggris:</strong> Membaca dan memahami kosakata instruksi pada blok <em>Scratch</em> (seperti <em>Move</em>, <em>Turn</em>, <em>Say</em>).</li>
+                            <li><strong>Seni Budaya:</strong> Memilih dan memvisualisasikan <em>Sprite</em> dan <em>Backdrop</em> agar terlihat harmonis.</li>
+                        </ul>
+                    </div>
+                    <div class="avoid-break">
+                        <h3 class="font-bold text-indigo-700 bg-indigo-50 px-3 py-1 rounded">Tujuan Pembelajaran</h3>
+                        <ol class="list-decimal pl-5 mt-2 text-slate-600 space-y-1">
+                            <li>Peserta didik mampu menjelaskan konsep algoritma sebagai urutan langkah logis dengan kalimat sendiri.</li>
+                            <li>Peserta didik mampu mengidentifikasi dan menggunakan fitur-fitur dasar pada antarmuka <em>Scratch</em>.</li>
+                            <li>Peserta didik mampu merangkai blok <em>Events</em>, <em>Motion</em>, dan <em>Looks</em> untuk membuat program animasi sederhana.</li>
+                        </ol>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <div class="avoid-break">
+                        <h3 class="font-bold text-indigo-700 bg-indigo-50 px-3 py-1 rounded">Topik Pembelajaran</h3>
+                        <p class="mt-2 text-slate-600 font-semibold">Animasi Interaktif Pertamaku: Menggerakkan Karakter dengan Logika Blok.</p>
+                    </div>
+                    <div class="avoid-break">
+                        <h3 class="font-bold text-indigo-700 bg-indigo-50 px-3 py-1 rounded">Praktek Pedagogis</h3>
+                        <ul class="mt-2 text-slate-600 space-y-1">
+                            <li><strong>Pendekatan/Strategi:</strong> Student-centered, Kolaboratif, Trial and Error.</li>
+                            <li><strong>Model:</strong> Project-Based Learning (PjBL) / Discovery Learning.</li>
+                            <li><strong>Metode:</strong> Demonstrasi interaktif, Diskusi Kelompok, Praktik (Hands-on).</li>
+                        </ul>
+                    </div>
+                    <div class="avoid-break">
+                        <h3 class="font-bold text-indigo-700 bg-indigo-50 px-3 py-1 rounded">Kemitraan & Lingkungan</h3>
+                        <p class="mt-2 text-slate-600">Guru berperan sebagai fasilitator/"pemandu logika". Kemitraan antarsiswa dijalin melalui <em>pair-programming</em>. Lingkungan di Lab komputer dengan proyektor, minimal 1 PC per kelompok.</p>
+                    </div>
+                    <div class="avoid-break">
+                        <h3 class="font-bold text-indigo-700 bg-indigo-50 px-3 py-1 rounded">Pemanfaatan Digital & Asesmen Awal</h3>
+                        <p class="mt-2 text-slate-600">Menggunakan <em>Scratch</em> (offline/online) dan materi presentasi visual. Asesmen awal diagnostik melalui tanya jawab minat game dan pemahaman dasar instruksi.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- III. PENGALAMAN BELAJAR -->
+        <section class="bg-white rounded-xl shadow-md p-8 border-t-4 border-orange-500 card-hover">
+            <h2 class="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-2"><i data-lucide="compass" class="text-orange-500"></i> III. PENGALAMAN BELAJAR</h2>
+            
+            <div class="space-y-6">
+                <!-- Kegiatan Awal -->
+                <div class="border border-orange-100 rounded-lg p-5 bg-orange-50/50">
+                    <h3 class="font-bold text-orange-700 text-lg mb-3 flex items-center gap-2"><i data-lucide="play-circle"></i> Kegiatan Awal (15 Menit)</h3>
+                    <ol class="list-decimal pl-5 text-sm text-slate-700 space-y-2">
+                        <li><strong>Pembukaan:</strong> Guru membuka kelas dengan menyapa, mengajak berdoa, dan memeriksa kehadiran Peserta Didik.</li>
+                        <li><strong>Apersepsi & Koneksi:</strong> Guru bertanya tentang pengalaman bermain game dan bagaimana karakter bisa bergerak merespons tombol.</li>
+                        <li><strong>Aktivitas Simulasi "Robot Buta":</strong> Guru meminta satu siswa maju ke depan dan menutup mata. Siswa lain memberi instruksi langkah demi langkah agar tidak menabrak. <span class="badge-joyful px-2 py-0.5 rounded text-xs font-bold inline-block mt-1 border border-yellow-300 shadow-sm">Joyful: Suasana menyenangkan dan tertawa</span></li>
+                        <li><strong>Penyampaian Tujuan:</strong> Guru menjelaskan bahwa komputer butuh instruksi detail berurutan yang disebut "Algoritma". <span class="badge-mindful px-2 py-0.5 rounded text-xs font-bold inline-block mt-1 border border-blue-300 shadow-sm">Mindful: Memusatkan perhatian pada logika instruksi</span></li>
+                    </ol>
+                </div>
+
+                <!-- Kegiatan Inti -->
+                <div class="border border-blue-100 rounded-lg p-5 bg-blue-50/50">
+                    <h3 class="font-bold text-blue-700 text-lg mb-4 flex items-center gap-2"><i data-lucide="cpu"></i> Kegiatan Inti (50 Menit) - Model: PjBL / Discovery</h3>
+                    <div class="space-y-4 text-sm text-slate-700">
+                        <div class="pl-4 border-l-2 border-blue-400 avoid-break">
+                            <h4 class="font-bold text-blue-800">Fase 1: Pengenalan & Demonstrasi (15 menit)</h4>
+                            <p>Guru memproyeksikan antarmuka <em>Scratch</em>. Mendemonstrasikan menarik blok kuning (<em>Events</em>) dan biru (<em>Motion</em>) lalu mengklik bendera hijau. <span class="badge-joyful px-2 py-0.5 rounded text-xs font-bold inline-block mt-1 border border-yellow-300 shadow-sm">Joyful: Visual interaktif</span></p>
+                        </div>
+                        <div class="pl-4 border-l-2 border-blue-400 avoid-break">
+                            <h4 class="font-bold text-blue-800">Fase 2: Perencanaan & Eksplorasi (10 menit)</h4>
+                            <p>Peserta Didik dibagi kelompok. Diberikan LKPD dengan tantangan: "Buat kucing berjalan dan menyapa". Mereka merencanakan blok berdasar warna. <span class="badge-meaningful px-2 py-0.5 rounded text-xs font-bold inline-block mt-1 border border-green-300 shadow-sm">Meaningful: Menghubungkan logika manusia ke blok warna</span></p>
+                        </div>
+                        <div class="pl-4 border-l-2 border-blue-400 avoid-break">
+                            <h4 class="font-bold text-blue-800">Fase 3: Praktik Pembuatan Proyek (20 menit)</h4>
+                            <p>Siswa merangkai blok. Guru bertindak sebagai fasilitator (detektif bug) memandu siswa yang kesulitan (error). Siswa dimotivasi mengubah angka di dalam blok. <span class="badge-mindful px-2 py-0.5 rounded text-xs font-bold inline-block mt-1 border border-blue-300 shadow-sm">Mindful: Menyadari kesalahan (error) adalah bagian dari belajar</span></p>
+                        </div>
+                        <div class="pl-4 border-l-2 border-blue-400 avoid-break">
+                            <h4 class="font-bold text-blue-800">Fase 4: Uji Coba / Pembuktian (5 menit)</h4>
+                            <p>Beberapa kelompok mempresentasikan dan memperlihatkan hasil animasi *Sprite* mereka ke kelompok lain.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kegiatan Penutup -->
+                <div class="border border-emerald-100 rounded-lg p-5 bg-emerald-50/50 avoid-break">
+                    <h3 class="font-bold text-emerald-700 text-lg mb-3 flex items-center gap-2"><i data-lucide="check-circle"></i> Kegiatan Penutup (15 Menit)</h3>
+                    <ol class="list-decimal pl-5 text-sm text-slate-700 space-y-2">
+                        <li><strong>Refleksi & Kesimpulan:</strong> Guru dan siswa menyimpulkan bahwa algoritma dan pemrograman seperti menyusun balok lego yang berurutan.</li>
+                        <li><strong>Evaluasi Singkat:</strong> Menanyakan "Bagian mana yang paling seru/membingungkan?". <span class="badge-meaningful px-2 py-0.5 rounded text-xs font-bold inline-block mt-1 border border-green-300 shadow-sm">Meaningful & Joyful</span></li>
+                        <li><strong>Tindak Lanjut & Penutup:</strong> Guru memberikan info pertemuan berikutnya (membuat game melompat), apresiasi, dan salam penutup.</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- IV. ASESMEN PEMBELAJARAN -->
+        <section class="bg-white rounded-xl shadow-md p-8 border-t-4 border-rose-500 card-hover">
+            <h2 class="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-2"><i data-lucide="clipboard-list" class="text-rose-500"></i> IV. ASESMEN PEMBELAJARAN</h2>
+            <div class="grid md:grid-cols-3 gap-4 text-sm">
+                <div class="bg-rose-50 p-4 rounded-lg border border-rose-100 avoid-break">
+                    <h3 class="font-bold text-rose-700 mb-2 border-b border-rose-200 pb-2">Asesmen Awal (Diagnostik)</h3>
+                    <p class="text-slate-700">Dilakukan melalui tanya jawab lisan di awal: "Siapa yang suka main game? Tahu cara karakter merespons tombol? Ada yang pernah mencoba Scratch?". Digunakan untuk memetakan kesiapan peserta didik.</p>
+                </div>
+                <div class="bg-rose-50 p-4 rounded-lg border border-rose-100 avoid-break">
+                    <h3 class="font-bold text-rose-700 mb-2 border-b border-rose-200 pb-2">Asesmen Proses (Formatif)</h3>
+                    <ul class="text-slate-700 list-disc pl-4 space-y-1">
+                        <li><strong>Sikap:</strong> Observasi kolaborasi, kemandirian, dan nalar kritis saat praktik.</li>
+                        <li><strong>Keterampilan:</strong> Observasi kinerja (kemampuan menyusun blok secara runtut dan <em>problem-solving</em>).</li>
+                    </ul>
+                </div>
+                <div class="bg-rose-50 p-4 rounded-lg border border-rose-100 avoid-break">
+                    <h3 class="font-bold text-rose-700 mb-2 border-b border-rose-200 pb-2">Asesmen Akhir (Sumatif)</h3>
+                    <ul class="text-slate-700 list-disc pl-4 space-y-1">
+                        <li><strong>Pengetahuan:</strong> Posttest (10 soal Pilihan Ganda) di akhir materi/pertemuan berikutnya.</li>
+                        <li><strong>Produk:</strong> Hasil proyek animasi <em>Scratch</em> di komputer.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- V. REFLEKSI & TANDA TANGAN -->
+        <section class="bg-white rounded-xl shadow-md p-8 border-t-4 border-teal-500 card-hover avoid-break">
+            <h2 class="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-2"><i data-lucide="lightbulb" class="text-teal-500"></i> V. REFLEKSI GURU DAN PESERTA DIDIK</h2>
+            <div class="grid md:grid-cols-2 gap-6 text-sm mb-12">
+                <div>
+                    <h3 class="font-bold text-teal-700 mb-2">A. Refleksi Guru</h3>
+                    <p class="text-slate-600 bg-teal-50 p-3 rounded border border-teal-100">Refleksi dilakukan untuk mengetahui kekurangan dan kelebihan selama pembelajaran, mengevaluasi metode analogi "Robot Buta", dan manajemen waktu di laboratorium (Lembar terlampir).</p>
+                </div>
+                <div>
+                    <h3 class="font-bold text-teal-700 mb-2">B. Refleksi Peserta Didik</h3>
+                    <p class="text-slate-600 bg-teal-50 p-3 rounded border border-teal-100">Dilakukan untuk mengetahui perasaan dan pemahaman siswa terhadap materi Coding (Scratch), mengetahui kendala <em>bug</em> yang paling sering dialami (Lembar terlampir).</p>
+                </div>
+            </div>
+
+            <!-- TANDA TANGAN PENGESAHAN -->
+            <div class="flex justify-between items-end text-center pt-8 border-t border-slate-200 text-slate-800">
+                <div>
+                    <p class="mb-20">Mengetahui,<br>Kepala Sekolah</p>
+                    <p class="font-bold underline">Maya Erniwaty Manalu, S.Pd</p>
+                    <p class="text-sm">NIP. 196803151992032011</p>
+                </div>
+                <div>
+                    <p class="mb-20">Palembang, 30 April 2026<br>Guru Mata Pelajaran</p>
+                    <p class="font-bold underline">Aris Bermansyah, S.Kom</p>
+                    <p class="text-sm">NIP. 199611142024211010</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE BREAK FOR PRINT -->
+        <div class="print-page-break"></div>
+
+        <!-- VI. LAMPIRAN FULL -->
+        <section class="mt-8">
+            <h2 class="text-3xl font-black text-slate-800 mb-8 text-center uppercase tracking-widest border-b-2 border-slate-300 pb-4">VI. Lampiran Lengkap</h2>
+
+            <!-- LAMPIRAN 1: LKPD -->
+            <div class="bg-white rounded-xl shadow-md border border-slate-200 mb-8 overflow-hidden avoid-break">
+                <div class="bg-slate-800 text-white p-4 font-bold flex justify-between items-center">
+                    <span>Lampiran 1: LEMBAR KERJA PESERTA DIDIK (LKPD)</span>
+                    <i data-lucide="monitor"></i>
+                </div>
+                <div class="p-6 text-sm text-slate-700">
+                    <div class="mb-6 flex flex-col md:flex-row gap-6 items-center border-b border-slate-200 pb-6 bg-orange-50/50 p-4 rounded-xl avoid-break">
+                        <!-- QR Code Website MPI -->
+                        <div class="flex flex-col items-center text-center">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://xiroro-ab.github.io/bab7-ap-kelas8/" alt="" class="w-24 h-24 object-contain drop-shadow-md border-4 border-white rounded-lg">
+                            <p class="text-[10px] font-bold mt-2 text-slate-600 tracking-wider">SCAN ME<br>Buka Materi</p>
+                        </div>
+                        
+                        <div class="flex-1 w-full">
+                            <h3 class="text-2xl font-black text-orange-600 mb-4 uppercase flex items-center gap-2">
+                                <i data-lucide="gamepad-2"></i> Misi: Animator Game Pertama!
+                            </h3>
+                            <div class="grid md:grid-cols-2 gap-4 w-full bg-white p-4 rounded-lg border border-orange-100 shadow-sm">
+                                <div class="flex items-end gap-2"><div class="font-bold text-slate-600">Nama Kelompok:</div><div class="border-b-2 border-slate-300 flex-1 h-5"></div></div>
+                                <div class="flex items-end gap-2"><div class="font-bold text-slate-600">Tanggal:</div><div class="border-b-2 border-slate-300 flex-1 h-5"></div></div>
+                                <div class="flex items-end gap-2"><div class="font-bold text-slate-600">Anggota 1:</div><div class="border-b-2 border-slate-300 flex-1 h-5"></div></div>
+                                <div class="flex items-end gap-2"><div class="font-bold text-slate-600">Anggota 2:</div><div class="border-b-2 border-slate-300 flex-1 h-5"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="avoid-break mb-6">
+                        <h4 class="font-bold text-lg mb-2 text-slate-800">A. Tujuan Pembelajaran</h4>
+                        <p>Mampu menyusun blok <em class="bg-yellow-100 px-1 rounded border border-yellow-200">Events</em>, <em class="bg-blue-100 px-1 rounded border border-blue-200">Motion</em>, dan <em class="bg-purple-100 px-1 rounded border border-purple-200">Looks</em> untuk membuat program animasi karakter (Sprite) sederhana.</p>
+                    </div>
+
+                    <div class="avoid-break mb-6">
+                        <h4 class="font-bold text-lg mb-2 text-slate-800">B. Alat dan Bahan</h4>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li>1 Unit Komputer/Laptop</li>
+                            <li>Aplikasi Scratch (Offline/Online)</li>
+                            <li>Alat Tulis</li>
+                        </ul>
+                    </div>
+
+                    <h4 class="font-bold text-lg mb-2 text-slate-800">C. Langkah-langkah Kegiatan (Petunjuk)</h4>
+                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 mb-6 flex flex-col md:flex-row gap-6 items-center avoid-break">
+                        <div class="flex-1">
+                            <ol class="list-decimal pl-5 space-y-4">
+                                <li class="pl-1">Buka aplikasi Scratch. Biarkan karakter kucing (Sprite 1) tetap ada di area Stage.</li>
+                                <li class="pl-1">Pergi ke palet warna <strong class="text-yellow-600 flex items-center gap-1"><span class="w-3 h-3 bg-yellow-400 rounded-full inline-block"></span> Kuning (Events)</strong>. Tarik blok <code class="bg-yellow-100 px-2 py-0.5 rounded border-b-2 border-r-2 border-yellow-400 shadow-sm font-semibold text-yellow-800 inline-block">When ⚑ Clicked</code> ke area *Scripts*.</li>
+                                <li class="pl-1">Pergi ke palet warna <strong class="text-blue-600 flex items-center gap-1"><span class="w-3 h-3 bg-blue-500 rounded-full inline-block"></span> Biru (Motion)</strong>. Tarik blok <code class="bg-blue-100 px-2 py-0.5 rounded border-b-2 border-r-2 border-blue-400 shadow-sm font-semibold text-blue-800 inline-block">Move (10) steps</code> dan tempelkan di bawah blok kuning. <em>(Ubah angka 10 menjadi 50)</em>.</li>
+                                <li class="pl-1">Pergi ke palet warna <strong class="text-purple-600 flex items-center gap-1"><span class="w-3 h-3 bg-purple-500 rounded-full inline-block"></span> Ungu (Looks)</strong>. Tarik blok <code class="bg-purple-100 px-2 py-0.5 rounded border-b-2 border-r-2 border-purple-400 shadow-sm font-semibold text-purple-800 inline-block">Say Hello! for (2) seconds</code> dan tempelkan di bawah blok biru.</li>
+                                <li class="pl-1">Klik ikon <strong>Bendera Hijau ⚑</strong> di atas panggung (Stage). Amati apa yang terjadi!</li>
+                            </ol>
+                        </div>
+                        
+                        <!-- Ilustrasi Blok (Lebih bersih dan resmi) -->
+                        <div class="w-full md:w-5/12 bg-white p-4 rounded-lg shadow-sm border border-slate-200 flex flex-col items-center justify-center">
+                            <div class="flex flex-col space-y-1">
+                                <div class="bg-yellow-400 text-yellow-900 font-bold px-4 py-2 rounded-t-xl rounded-br-lg border-b-4 border-yellow-500 w-48 shadow">When ⚑ clicked</div>
+                                <div class="bg-blue-500 text-white font-bold px-4 py-2 rounded-r-lg border-b-4 border-blue-600 w-48 shadow ml-2">move <span class="bg-white text-black px-2 rounded-full">50</span> steps</div>
+                                <div class="bg-purple-500 text-white font-bold px-4 py-2 rounded-r-lg rounded-bl-lg border-b-4 border-purple-600 w-48 shadow ml-2">say <span class="bg-white text-black px-2 rounded-full">Hello!</span> for <span class="bg-white text-black px-2 rounded-full">2</span> secs</div>
+                            </div>
+                            <p class="text-[10px] text-center text-slate-500 mt-4 font-medium uppercase tracking-wider">Contoh Susunan Blok Scratch</p>
+                        </div>
+                    </div>
+
+                    <div class="avoid-break">
+                        <h4 class="font-bold text-lg mb-2 text-slate-800">D. Laporan & Kesimpulan</h4>
+                        <div class="space-y-6 bg-white p-5 border border-slate-200 rounded-xl shadow-sm">
+                            <div>
+                                <p class="font-semibold text-slate-800 mb-2 flex gap-2"><i data-lucide="help-circle" class="w-5 h-5 text-orange-500"></i> 1. Apa yang terjadi pada kucing saat Bendera Hijau diklik?</p>
+                                <div class="h-12 border-b-2 border-dashed border-slate-300"></div>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-slate-800 mb-2 flex gap-2"><i data-lucide="help-circle" class="w-5 h-5 text-orange-500"></i> 2. Apa fungsi dari blok warna Kuning (Events)? Bagaimana jika blok itu dihapus?</p>
+                                <div class="h-12 border-b-2 border-dashed border-slate-300"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LAMPIRAN 2: RUBRIK & POSTTEST -->
+            <div class="bg-white rounded-xl shadow-md border border-slate-200 mb-8 overflow-hidden print-page-break">
+                <div class="bg-slate-800 text-white p-4 font-bold">Lampiran 2: LEMBAR PENILAIAN DAN RUBRIK PENILAIAN</div>
+                <div class="p-6 text-sm text-slate-700">
+                    
+                    <div class="avoid-break">
+                        <h4 class="font-bold text-lg mb-4 text-blue-700 flex items-center gap-2"><i data-lucide="check-square"></i> A. Penilaian Sikap (Observasi Profil Pelajar Pancasila)</h4>
+                        <div class="overflow-x-auto">
+                            <table class="w-full border-collapse border border-slate-300 mb-2 text-center">
+                                <thead class="bg-slate-100">
+                                    <tr>
+                                        <th class="border border-slate-300 p-3">No</th>
+                                        <th class="border border-slate-300 p-3 text-left">Nama Siswa</th>
+                                        <th class="border border-slate-300 p-3">Bernalar Kritis</th>
+                                        <th class="border border-slate-300 p-3">Gotong Royong</th>
+                                        <th class="border border-slate-300 p-3">Kreatif</th>
+                                        <th class="border border-slate-300 p-3 bg-slate-200">Skor Total</th>
+                                        <th class="border border-slate-300 p-3 bg-blue-100">Nilai</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="hover:bg-slate-50"><td class="border border-slate-300 p-2">1</td><td class="border border-slate-300 p-2 text-left">...</td><td class="border border-slate-300 p-2"></td><td class="border border-slate-300 p-2"></td><td class="border border-slate-300 p-2"></td><td class="border border-slate-300 p-2 bg-slate-50"></td><td class="border border-slate-300 p-2 bg-blue-50"></td></tr>
+                                    <tr class="hover:bg-slate-50"><td class="border border-slate-300 p-2">2</td><td class="border border-slate-300 p-2 text-left">...</td><td class="border border-slate-300 p-2"></td><td class="border border-slate-300 p-2"></td><td class="border border-slate-300 p-2"></td><td class="border border-slate-300 p-2 bg-slate-50"></td><td class="border border-slate-300 p-2 bg-blue-50"></td></tr>
+                                </tbody>
+                            </table>
+                            <p class="text-xs mb-8 text-slate-500"><em>*Skor: 4 (Sangat Baik), 3 (Baik), 2 (Cukup), 1 (Kurang). Nilai = (Skor Diperoleh / 12) * 100</em></p>
+                        </div>
+                    </div>
+
+                    <div class="avoid-break mt-6">
+                        <h4 class="font-bold text-lg mb-4 text-blue-700 flex items-center gap-2"><i data-lucide="code"></i> B. Penilaian Keterampilan (Praktik LKPD)</h4>
+                        <div class="overflow-x-auto">
+                            <table class="w-full border-collapse border border-slate-300 mb-8 text-left">
+                                <thead class="bg-blue-600 text-white text-center">
+                                    <tr><th class="border border-blue-700 p-3 w-1/3">Aspek</th><th class="border border-blue-700 p-3">Skor 4</th><th class="border border-blue-700 p-3">Skor 3</th><th class="border border-blue-700 p-3">Skor 2</th><th class="border border-blue-700 p-3">Skor 1</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="hover:bg-slate-50"><td class="border border-slate-300 p-3 font-bold bg-slate-50">Kesesuaian Urutan Blok (Logika)</td><td class="border border-slate-300 p-3 text-xs">Sangat logis (Event -> Motion -> Look).</td><td class="border border-slate-300 p-3 text-xs">Logis tapi ada elemen kecil yang tertukar.</td><td class="border border-slate-300 p-3 text-xs">Berjalan sebagian, logika terbalik.</td><td class="border border-slate-300 p-3 text-xs">Tidak logis sama sekali.</td></tr>
+                                    <tr class="hover:bg-slate-50"><td class="border border-slate-300 p-3 font-bold bg-slate-50">Penggunaan Kategori Blok</td><td class="border border-slate-300 p-3 text-xs">Menggunakan 3 elemen dengan sempurna dan dimodifikasi.</td><td class="border border-slate-300 p-3 text-xs">Menggunakan 3 elemen sesuai instruksi.</td><td class="border border-slate-300 p-3 text-xs">Hanya menggunakan 2 elemen dengan benar.</td><td class="border border-slate-300 p-3 text-xs">Hanya 1 elemen atau salah tarik blok.</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 border-t pt-6">
+                        <h4 class="font-bold text-lg mb-4 text-blue-700 flex items-center gap-2"><i data-lucide="file-text"></i> C. Penilaian Pengetahuan (Post-Test)</h4>
+                        <div class="bg-slate-50 p-5 border border-slate-200 rounded-xl shadow-sm">
+                            <div class="avoid-break mb-6">
+                                <h5 class="font-bold mb-3 flex items-center gap-2"><i data-lucide="target" class="w-4 h-4 text-rose-500"></i> Kisi-Kisi Soal:</h5>
+                                <ul class="list-disc pl-5 text-sm space-y-1 bg-white p-4 rounded border border-slate-100">
+                                    <li><strong>Materi Pokok:</strong> Algoritma, Pengenalan Scratch, Blok Dasar.</li>
+                                    <li><strong>Indikator:</strong> Memahami definisi algoritma (C2), Mengidentifikasi antarmuka Scratch (C1), Menganalisis fungsi blok (C4).</li>
+                                    <li><strong>Bentuk Soal:</strong> Pilihan Ganda (10 Soal).</li>
+                                </ul>
+                            </div>
+                            
+                            <h5 class="font-bold mb-3 flex items-center gap-2"><i data-lucide="edit-3" class="w-4 h-4 text-indigo-500"></i> Soal Post-Test Pilihan Ganda:</h5>
+                            <ol class="list-decimal pl-5 text-sm space-y-4">
+                                <li class="pl-2 avoid-break">Urutan langkah-langkah logis untuk menyelesaikan suatu masalah disebut...<br> <div class="mt-1 space-x-4"><span class="bg-white px-2 py-1 border rounded inline-block shadow-sm">A. Pemrograman</span> <span class="bg-white px-2 py-1 border rounded inline-block shadow-sm">B. Algoritma</span> <span class="bg-white px-2 py-1 border rounded inline-block shadow-sm">C. Flowchart</span> <span class="bg-white px-2 py-1 border rounded inline-block shadow-sm">D. Coding</span></div></li>
+                                <li class="pl-2 avoid-break">Area pada Scratch tempat kita melihat hasil animasi atau game yang kita buat disebut...<br> <div class="mt-1 space-x-4"><span class="bg-white px-2 py-1 border rounded inline-block shadow-sm">A. Script Area</span> <span class="bg-white px-2 py-1 border rounded inline-block shadow-sm">B. Block Palette</span> <span class="bg-white px-2 py-1 border rounded inline-block shadow-sm">C. Stage</span> <span class="bg-white px-2 py-1 border rounded inline-block shadow-sm">D. Backdrop</span></div></li>
+                                <li class="pl-2 avoid-break">Karakter animasi yang dapat diprogram dalam Scratch dikenal dengan istilah...<br> <div class="mt-1 space-x-4"><span class="bg-white px-2 py-1 border rounded inline-block shadow-sm">A. Object</span> <span class="bg-white px-2 py-1 border rounded inline-block shadow-sm">B. Actor</span> <span class="bg-white px-2 py-1 border rounded inline-block shadow-sm">C. Avatar</span> <span class="bg-white px-2 py-1 border rounded inline-block shadow-sm">D. Sprite</span></div></li>
+                                <li class="pl-2 avoid-break">Blok perintah <code class="bg-yellow-100 border border-yellow-300 px-1 rounded shadow-sm">When ⚑ Clicked</code> terdapat pada kelompok warna/kategori...<br> <div class="mt-1 space-x-4"><span class="bg-white px-2 py-1 border rounded inline-block shadow-sm">A. Motion (Biru)</span> <span class="bg-white px-2 py-1 border rounded inline-block shadow-sm">B. Looks (Ungu)</span> <span class="bg-white px-2 py-1 border rounded inline-block shadow-sm">C. Events (Kuning)</span> <span class="bg-white px-2 py-1 border rounded inline-block shadow-sm">D. Control (Oranye)</span></div></li>
+                                <li class="pl-2 avoid-break">Jika kita ingin membuat karakter kucing bergeser ke kanan, blok yang paling tepat digunakan adalah...<br> <div class="mt-1 space-x-4"><span class="bg-white px-2 py-1 border rounded inline-block shadow-sm">A. Move 10 steps</span> <span class="bg-white px-2 py-1 border rounded inline-block shadow-sm">B. Say "Hello"</span> <span class="bg-white px-2 py-1 border rounded inline-block shadow-sm">C. Play sound</span> <span class="bg-white px-2 py-1 border rounded inline-block shadow-sm">D. Wait 1 seconds</span></div></li>
+                                <li class="pl-2 avoid-break">Kesalahan dalam penulisan blok kode sehingga program tidak berjalan semestinya disebut...<br> <div class="mt-1 space-x-4"><span class="bg-white px-2 py-1 border rounded inline-block shadow-sm">A. Virus</span> <span class="bg-white px-2 py-1 border rounded inline-block shadow-sm">B. Malware</span> <span class="bg-white px-2 py-1 border rounded inline-block shadow-sm">C. Error / Bug</span> <span class="bg-white px-2 py-1 border rounded inline-block shadow-sm">D. Hacker</span></div></li>
+                                <li class="pl-2 avoid-break">Blok warna Ungu (Looks) biasanya digunakan untuk mengatur...<br> <div class="mt-1 space-x-4"><span class="bg-white px-2 py-1 border rounded inline-block shadow-sm">A. Suara</span> <span class="bg-white px-2 py-1 border rounded inline-block shadow-sm">B. Gerakan</span> <span class="bg-white px-2 py-1 border rounded inline-block shadow-sm">C. Kejadian awal</span> <span class="bg-white px-2 py-1 border rounded inline-block shadow-sm">D. Tampilan & Teks</span></div></li>
+                                <li class="pl-2 avoid-break">Andi meletakkan blok <em class="bg-blue-100 border border-blue-300 px-1 rounded shadow-sm">Move 10 steps</em>, tetapi saat diklik bendera hijau kucing tidak bergerak. Apa yang kurang dari program Andi?<br> <div class="mt-1 space-y-2"><div class="bg-white px-2 py-1 border rounded shadow-sm">A. Tidak ada blok Events/Pemicu di atasnya</div> <div class="bg-white px-2 py-1 border rounded shadow-sm">B. Angkanya terlalu kecil</div> <div class="bg-white px-2 py-1 border rounded shadow-sm">C. Kucingnya tidur</div> <div class="bg-white px-2 py-1 border rounded shadow-sm">D. Tidak ada suara</div></div></li>
+                                <li class="pl-2 avoid-break">Posisi karakter di Scratch ditentukan oleh titik koordinat. Sumbu mendatar disebut sumbu...<br> <div class="mt-1 space-x-4"><span class="bg-white px-2 py-1 border rounded inline-block shadow-sm">A. Y</span> <span class="bg-white px-2 py-1 border rounded inline-block shadow-sm">B. Z</span> <span class="bg-white px-2 py-1 border rounded inline-block shadow-sm">C. X</span> <span class="bg-white px-2 py-1 border rounded inline-block shadow-sm">D. A</span></div></li>
+                                <li class="pl-2 avoid-break">Platform Scratch dibuat dengan tujuan utama untuk...<br> <div class="mt-1 space-y-2"><div class="bg-white px-2 py-1 border rounded inline-block shadow-sm">A. Mengedit video</div> <div class="bg-white px-2 py-1 border rounded inline-block shadow-sm">B. Membuat dokumen</div> <div class="bg-white px-2 py-1 border rounded w-full shadow-sm">C. Belajar logika pemrograman secara visual</div> <div class="bg-white px-2 py-1 border rounded inline-block shadow-sm">D. Menghitung data angka</div></div></li>
+                            </ol>
+                            
+                            <div class="mt-6 pt-4 border-t border-slate-300 bg-white p-4 rounded text-center avoid-break">
+                                <h5 class="font-bold text-sm text-slate-800 mb-2">Kunci Jawaban & Rubrik:</h5>
+                                <p class="text-sm font-mono bg-slate-100 py-2 rounded mb-2 border border-slate-200">1.B | 2.C | 3.D | 4.C | 5.A | 6.C | 7.D | 8.A | 9.C | 10.C</p>
+                                <p class="text-xs text-slate-500"><em>Pedoman Penyekoran: Nilai Akhir = (Jumlah Jawaban Benar / 10) x 100.</em></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 print-page-break">
+                <!-- LAMPIRAN 3: REFLEKSI GURU -->
+                <div class="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden avoid-break">
+                    <div class="bg-slate-800 text-white p-4 font-bold flex items-center gap-2"><i data-lucide="user-check"></i> Lampiran 3: LEMBAR REFLEKSI GURU</div>
+                    <div class="p-5 text-sm text-slate-700">
+                        <div class="mb-6 grid grid-cols-2 gap-3 bg-teal-50 p-4 rounded-lg border border-teal-100">
+                            <div class="font-medium text-teal-800 border-b border-teal-200 pb-1">Nama: Aris Bermansyah, S.Kom</div>
+                            <div class="font-medium text-teal-800 border-b border-teal-200 pb-1">Kelas: VIII</div>
+                            <div class="font-medium text-teal-800 border-b border-teal-200 pb-1">Topik: Algoritma & Scratch</div>
+                            <div class="font-medium text-teal-800 border-b border-teal-200 pb-1">Tanggal: ____________</div>
+                        </div>
+                        <table class="w-full border-collapse border border-slate-300 shadow-sm">
+                            <thead class="bg-slate-100 text-left"><tr><th class="border border-slate-300 p-3 w-1/2">Pertanyaan Reflektif</th><th class="border border-slate-300 p-3">Catatan / Jawaban</th></tr></thead>
+                            <tbody>
+                                <tr class="hover:bg-slate-50"><td class="border border-slate-300 p-3">Apakah analogi "Robot Buta" sukses memahamkan konsep algoritma?</td><td class="border border-slate-300 p-3"></td></tr>
+                                <tr class="hover:bg-slate-50"><td class="border border-slate-300 p-3">Kendala teknis apa yang dialami siswa saat menggunakan Scratch di lab?</td><td class="border border-slate-300 p-3"></td></tr>
+                                <tr class="hover:bg-slate-50"><td class="border border-slate-300 p-3">Apa yang perlu diperbaiki untuk pertemuan selanjutnya?</td><td class="border border-slate-300 p-3"></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- LAMPIRAN 4: REFLEKSI SISWA -->
+                <div class="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden avoid-break">
+                    <div class="bg-slate-800 text-white p-4 font-bold flex items-center gap-2"><i data-lucide="smile"></i> Lampiran 4: LEMBAR REFLEKSI PESERTA DIDIK</div>
+                    <div class="p-5 text-sm text-slate-700 space-y-5">
+                        <div class="flex gap-6 mb-4 bg-yellow-50 p-4 rounded-lg border border-yellow-100">
+                            <div class="w-1/2 font-medium border-b border-yellow-300 pb-1">Nama: ___________</div>
+                            <div class="w-1/2 font-medium border-b border-yellow-300 pb-1">Kelas: ___________</div>
+                        </div>
+                        <p class="font-bold text-center text-lg text-slate-800">Hai! Yuk ceritakan pengalaman belajarmu hari ini!</p>
+                        
+                        <div class="bg-white p-4 rounded border border-slate-200 shadow-sm">
+                            <p class="font-medium mb-3">1. Perasaanmu setelah belajar membuat program kucing (Scratch) hari ini?</p>
+                            <div class="flex justify-around mt-2">
+                                <label class="cursor-pointer hover:bg-slate-50 p-2 rounded-lg border border-transparent hover:border-slate-200 transition-colors"><input type="radio" name="feel" class="mr-2"> 😊 Senang</label>
+                                <label class="cursor-pointer hover:bg-slate-50 p-2 rounded-lg border border-transparent hover:border-slate-200 transition-colors"><input type="radio" name="feel" class="mr-2"> 🤔 Bingung</label>
+                                <label class="cursor-pointer hover:bg-slate-50 p-2 rounded-lg border border-transparent hover:border-slate-200 transition-colors"><input type="radio" name="feel" class="mr-2"> 🤯 Pusing</label>
+                            </div>
+                        </div>
+                        <div class="bg-white p-4 rounded border border-slate-200 shadow-sm">
+                            <p class="font-medium">2. Satu hal paling penting/keren yang aku pelajari hari ini adalah:</p>
+                            <div class="h-8 border-b-2 border-dashed border-slate-300 mt-2"></div>
+                        </div>
+                        <div class="bg-white p-4 rounded border border-slate-200 shadow-sm">
+                            <p class="font-medium">3. Bagian mana (blok warna apa) yang masih membuatmu bingung?</p>
+                            <div class="h-8 border-b-2 border-dashed border-slate-300 mt-2"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LAMPIRAN 5 & 6 -->
+            <div class="grid md:grid-cols-2 gap-8 mt-8 print-page-break">
+                <!-- LAMPIRAN 5: MEDIA INTERAKTIF -->
+                <div class="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden flex flex-col avoid-break">
+                    <div class="bg-slate-800 text-white p-4 font-bold flex items-center gap-2"><i data-lucide="image"></i> Lampiran 5: MEDIA PEMBELAJARAN</div>
+                    <div class="p-6 text-center text-slate-600 text-sm flex-1 flex flex-col justify-center">
+                        <div class="border border-slate-200 rounded-lg p-2 mb-4 bg-slate-50 shadow-inner">
+                            <img src="https://raw.githubusercontent.com/xiroro-ab/bab7-ap-kelas8/refs/heads/main/screenshot_mpi.jpg" onerror="this.onerror=null;this.src='https://placehold.co/800x400/0f172a/06b6d4?text=Screenshot+Website+MPI';" alt="" class="rounded w-full object-cover border border-slate-200 shadow-sm">
+                            <p class="text-xs text-slate-500 mt-3 font-medium">Tampilan Beranda Website Media Pembelajaran Interaktif (MPI)</p>
+                        </div>
+                        <div class="bg-blue-50 p-4 rounded-xl text-blue-900 border border-blue-200 text-left text-sm leading-relaxed shadow-sm">
+                            Media pembelajaran pada materi ini menggunakan <strong>Website Media Pembelajaran Interaktif (MPI)</strong> yang dibangun secara khusus berbasis Web. MPI ini memuat seluruh panduan materi, kuis interaktif, mini-game edukasi, dan akses langsung ke <em>Scratch Lab Workspace</em>. <br><br>
+                            Peserta didik dapat mengakses MPI ini kapan saja melalui PC atau Gawai Pintar pada tautan berikut:<br>
+                            <a href="https://xiroro-ab.github.io/bab7-ap-kelas8/" class="inline-block mt-3 font-bold text-blue-600 hover:text-blue-800 break-all bg-white px-3 py-1.5 rounded-lg border border-blue-300 shadow-sm transition-colors" target="_blank">
+                                <i data-lucide="external-link" class="w-4 h-4 inline-block mr-1"></i> https://xiroro-ab.github.io/bab7-ap-kelas8/
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LAMPIRAN 6: GLOSARIUM -->
+                <div class="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden flex flex-col avoid-break">
+                    <div class="bg-slate-800 text-white p-4 font-bold flex items-center gap-2"><i data-lucide="book-open"></i> Lampiran 6: GLOSARIUM</div>
+                    <div class="p-6 text-sm text-slate-700 flex-1">
+                        <dl class="space-y-4">
+                            <div class="bg-slate-50 p-3 rounded border border-slate-100">
+                                <dt class="font-bold text-blue-700 text-base mb-1">Algoritma</dt>
+                                <dd class="text-slate-600">Urutan langkah-langkah logis dan terstruktur untuk menyelesaikan suatu masalah.</dd>
+                            </div>
+                            <div class="bg-slate-50 p-3 rounded border border-slate-100">
+                                <dt class="font-bold text-blue-700 text-base mb-1">Block Programming</dt>
+                                <dd class="text-slate-600">Metode pemrograman yang menggunakan blok-blok grafis mirip kepingan puzzle alih-alih mengetik teks kode.</dd>
+                            </div>
+                            <div class="bg-slate-50 p-3 rounded border border-slate-100">
+                                <dt class="font-bold text-blue-700 text-base mb-1">Bug / Error</dt>
+                                <dd class="text-slate-600">Cacat atau kesalahan pada suatu program yang menyebabkan hasil tidak sesuai keinginan.</dd>
+                            </div>
+                            <div class="bg-slate-50 p-3 rounded border border-slate-100">
+                                <dt class="font-bold text-blue-700 text-base mb-1">Events (Kejadian)</dt>
+                                <dd class="text-slate-600">Sesuatu yang memicu jalannya sebuah program (misal: tombol bendera hijau diklik).</dd>
+                            </div>
+                            <div class="bg-slate-50 p-3 rounded border border-slate-100">
+                                <dt class="font-bold text-blue-700 text-base mb-1">Scratch</dt>
+                                <dd class="text-slate-600">Bahasa pemrograman visual gratis yang dikembangkan MIT untuk belajar membuat animasi dan game.</dd>
+                            </div>
+                            <div class="bg-slate-50 p-3 rounded border border-slate-100">
+                                <dt class="font-bold text-blue-700 text-base mb-1">Sprite</dt>
+                                <dd class="text-slate-600">Karakter atau objek grafis 2D yang dapat digerakkan dan diberi instruksi di dalam Scratch.</dd>
+                            </div>
+                            <div class="bg-slate-50 p-3 rounded border border-slate-100">
+                                <dt class="font-bold text-blue-700 text-base mb-1">Stage</dt>
+                                <dd class="text-slate-600">Area panggung atau layar utama tempat Sprite bergerak dan berinteraksi.</dd>
+                            </div>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+        
+        <footer class="text-center text-slate-400 text-xs py-8 mt-8 border-t border-slate-200 no-print">
+            <p>&copy; 2026 - Modul Ajar Informatika Interaktif SMP Negeri 58 Palembang.</p>
+        </footer>
+
+    </main>
+
+    <!-- TOMBOL CETAK MENGAMBANG (NO-PRINT) -->
+    <div class="fixed bottom-6 right-6 flex flex-col gap-3 no-print z-50">
+        <button onclick="printDocument('portrait')" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.12)] flex items-center gap-2 font-bold transition-all transform hover:scale-105 border-2 border-white">
+            <i data-lucide="printer" class="w-5 h-5"></i> Cetak Potrait
+        </button>
+        <button onclick="printDocument('landscape')" class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-3 rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.12)] flex items-center gap-2 font-bold transition-all transform hover:scale-105 border-2 border-white">
+            <i data-lucide="monitor" class="w-5 h-5"></i> Cetak Landscape
+        </button>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        function printDocument(orientation) {
+            // Mengubah CSS @page size secara dinamis berdasarkan orientasi tombol yang diklik
+            const styleTag = document.getElementById('print-page-style');
+            styleTag.innerHTML = `@media print { @page { size: A4 ${orientation}; margin: 1.2cm; } }`;
+            
+            // Jeda singkat agar browser sempat memproses CSS baru sebelum membuka dialog cetak
+            setTimeout(() => {
+                window.print();
+            }, 100);
+        }
+    </script>
+</body>
+</html>
