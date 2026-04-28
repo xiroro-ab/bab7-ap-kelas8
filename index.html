@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Informatika - Algoritma & Scratch</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: #f8fafc;
+            overflow-x: hidden;
+            background-color: #0f172a;
+        }
+
+        /* Latar Belakang Estetik ala Anime/Lofi */
+        .bg-aesthetic {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            /* Menggunakan gambar pemandangan Jepang yang estetik */
+            background-image: url('https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=1920&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            z-index: -2;
+        }
+        
+        /* Overlay gelap agar teks tetap terbaca */
+        .bg-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(10, 15, 30, 0.65);
+            z-index: -1;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #06b6d4; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #22d3ee; }
+
+        /* Animations */
+        .fade-in { animation: fadeIn 0.4s ease-in-out; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Glassmorphism cards ala Portal Referensi */
+        .glass-card {
+            background: rgba(15, 23, 42, 0.5);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            border-radius: 16px;
+        }
+
+        .menu-card { transition: all 0.3s ease; }
+        .menu-card:hover { 
+            transform: translateY(-5px); 
+            background: rgba(15, 23, 42, 0.7);
+            border-color: rgba(6, 182, 212, 0.8);
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.4), inset 0 0 10px rgba(6, 182, 212, 0.1);
+        }
+
+        /* Neon Glow Effect untuk Judul */
+        .glow-text {
+            color: #fff;
+            text-shadow: 0 0 10px #06b6d4, 0 0 20px #06b6d4, 0 0 40px #06b6d4;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 800;
+        }
+
+        .glow-icon {
+            filter: drop-shadow(0 0 8px rgba(6, 182, 212, 0.8));
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Background Elements -->
+    <div class="bg-aesthetic"></div>
+    <div class="bg-overlay"></div>
+
+    <!-- Top Navigation (Minimalist Transparent) -->
+    <nav class="border-b border-cyan-500/20 sticky top-0 z-50 bg-slate-900/40 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center relative">
+            <button onclick="toggleSidebar()" class="text-cyan-400 hover:text-cyan-300 transition-colors">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+            <h1 class="absolute left-1/2 transform -translate-x-1/2 font-bold text-lg tracking-wider text-cyan-400 glow-text" id="nav-title">Beranda</h1>
+            <div class="w-6 h-6"></div> <!-- Spacer for flex alignment -->
+        </div>
+    </nav>
+
+    <!-- Sidebar Overlay & Menu -->
+    <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/60 z-[60] hidden backdrop-blur-sm transition-opacity"></div>
+
+    <aside id="sidebar" class="fixed top-0 left-0 w-64 h-full bg-slate-900/95 backdrop-blur-xl border-r border-cyan-500/30 z-[70] transform -translate-x-full transition-transform duration-300 shadow-[0_0_30px_rgba(6,182,212,0.2)] flex flex-col">
+        <div class="p-6 border-b border-cyan-500/20 flex justify-between items-center">
+            <span class="font-bold text-xl glow-text text-cyan-400 tracking-wider">Menu Utama</span>
+            <button onclick="toggleSidebar()" class="text-cyan-400 hover:text-cyan-300">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+        </div>
+        <div class="p-4 flex flex-col gap-2 overflow-y-auto">
+            <button onclick="navigateTo('beranda', 'Beranda')" class="flex items-center gap-4 text-left w-full px-4 py-3 rounded-xl text-slate-200 hover:bg-cyan-900/40 hover:text-cyan-300 transition-colors"><i data-lucide="home" class="w-5 h-5"></i> Beranda</button>
+            <button onclick="navigateTo('kompetensi', 'Kompetensi')" class="flex items-center gap-4 text-left w-full px-4 py-3 rounded-xl text-slate-200 hover:bg-cyan-900/40 hover:text-cyan-300 transition-colors"><i data-lucide="shield-check" class="w-5 h-5"></i> Kompetensi</button>
+            <button onclick="navigateTo('materi', 'Materi Pembelajaran')" class="flex items-center gap-4 text-left w-full px-4 py-3 rounded-xl text-slate-200 hover:bg-cyan-900/40 hover:text-cyan-300 transition-colors"><i data-lucide="book-open" class="w-5 h-5"></i> Materi</button>
+            <button onclick="navigateTo('kuis', 'Kuis Interaktif')" class="flex items-center gap-4 text-left w-full px-4 py-3 rounded-xl text-slate-200 hover:bg-cyan-900/40 hover:text-cyan-300 transition-colors"><i data-lucide="help-circle" class="w-5 h-5"></i> Kuis</button>
+            <button onclick="navigateTo('peringkat', 'Papan Peringkat')" class="flex items-center gap-4 text-left w-full px-4 py-3 rounded-xl text-slate-200 hover:bg-cyan-900/40 hover:text-cyan-300 transition-colors"><i data-lucide="users" class="w-5 h-5"></i> Peringkat</button>
+            <button onclick="navigateTo('game', 'Mainkan Game')" class="flex items-center gap-4 text-left w-full px-4 py-3 rounded-xl text-slate-200 hover:bg-cyan-900/40 hover:text-cyan-300 transition-colors"><i data-lucide="puzzle" class="w-5 h-5"></i> Games</button>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 max-w-6xl mx-auto w-full p-4 md:p-8 relative">
+        
+        <!-- ================= VIEW: BERANDA ================= -->
+        <section id="view-beranda" class="fade-in block">
+            
+            <!-- Hero Title -->
+            <div class="flex flex-col items-center text-center mb-16 mt-8">
+                <h1 class="text-4xl md:text-5xl lg:text-6xl mb-4 glow-text leading-tight">
+                    Selamat Datang di Portal Informatika
+                </h1>
+                <p class="text-slate-200 text-sm md:text-lg max-w-3xl font-medium font-mono">
+                    Jelajahi materi, uji pemahamanmu dengan kuis interaktif, dan raih peringkat teratas!
+                </p>
+            </div>
+
+            <!-- Portal Grid Menu (3 Top, 2 Bottom) -->
+            <div class="max-w-5xl mx-auto">
+                <!-- Baris Pertama (3 Kartu) -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                    <!-- Card 1 -->
+                    <div onclick="navigateTo('kompetensi', 'Kompetensi')" class="menu-card glass-card p-8 flex flex-col items-center justify-center text-center cursor-pointer group">
+                        <i data-lucide="shield-check" class="w-14 h-14 text-cyan-400 mb-4 glow-icon group-hover:scale-110 transition-transform"></i>
+                        <h3 class="font-bold text-xl md:text-2xl text-white mb-2 tracking-wide">Kompetensi</h3>
+                        <p class="text-slate-300 text-sm">Lihat capaian dan tujuan pembelajaran.</p>
+                    </div>
+                    <!-- Card 2 -->
+                    <div onclick="navigateTo('materi', 'Materi Pembelajaran')" class="menu-card glass-card p-8 flex flex-col items-center justify-center text-center cursor-pointer group">
+                        <i data-lucide="book-open" class="w-14 h-14 text-cyan-400 mb-4 glow-icon group-hover:scale-110 transition-transform"></i>
+                        <h3 class="font-bold text-xl md:text-2xl text-white mb-2 tracking-wide">Materi</h3>
+                        <p class="text-slate-300 text-sm">Pelajari konsep dasar algoritma & antarmuka Scratch.</p>
+                    </div>
+                    <!-- Card 3 -->
+                    <div onclick="navigateTo('kuis', 'Kuis Interaktif')" class="menu-card glass-card p-8 flex flex-col items-center justify-center text-center cursor-pointer group">
+                        <i data-lucide="help-circle" class="w-14 h-14 text-cyan-400 mb-4 glow-icon group-hover:scale-110 transition-transform"></i>
+                        <h3 class="font-bold text-xl md:text-2xl text-white mb-2 tracking-wide">Kuis</h3>
+                        <p class="text-slate-300 text-sm">Uji pengetahuanmu dan raih skor tertinggi.</p>
+                    </div>
+                </div>
+                
+                <!-- Baris Kedua (2 Kartu di tengah) -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:w-2/3 mx-auto">
+                    <!-- Card 4 -->
+                    <div onclick="navigateTo('peringkat', 'Papan Peringkat')" class="menu-card glass-card p-8 flex flex-col items-center justify-center text-center cursor-pointer group">
+                        <i data-lucide="users" class="w-14 h-14 text-cyan-400 mb-4 glow-icon group-hover:scale-110 transition-transform"></i>
+                        <h3 class="font-bold text-xl md:text-2xl text-white mb-2 tracking-wide">Papan Peringkat</h3>
+                        <p class="text-slate-300 text-sm">Lihat posisimu di antara yang lain.</p>
+                    </div>
+                    <!-- Card 5 -->
+                    <div onclick="navigateTo('game', 'Mainkan Game')" class="menu-card glass-card p-8 flex flex-col items-center justify-center text-center cursor-pointer group">
+                        <i data-lucide="puzzle" class="w-14 h-14 text-cyan-400 mb-4 glow-icon group-hover:scale-110 transition-transform"></i>
+                        <h3 class="font-bold text-xl md:text-2xl text-white mb-2 tracking-wide">Games</h3>
+                        <p class="text-slate-300 text-sm">Belajar sambil bermain dengan game edukatif.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= VIEW: KOMPETENSI ================= -->
+        <section id="view-kompetensi" class="fade-in hidden">
+            <button onclick="navigateTo('beranda', 'Beranda')" class="mb-6 flex items-center gap-2 text-cyan-400 hover:text-cyan-300 font-medium transition-colors bg-slate-900/50 px-4 py-2 rounded-full border border-cyan-500/30">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i> Kembali ke Beranda
+            </button>
+            <div class="glass-card p-8 border-l-4 border-l-cyan-400">
+                <div class="flex items-center gap-4 mb-6 border-b border-cyan-500/20 pb-4">
+                    <i data-lucide="shield-check" class="w-10 h-10 text-cyan-400 glow-icon"></i>
+                    <h2 class="text-3xl font-bold glow-text">Kompetensi & Tujuan Belajar</h2>
+                </div>
+                <div class="space-y-6 text-slate-300">
+                    <div class="bg-slate-900/60 p-6 rounded-xl border border-slate-700/50">
+                        <h3 class="text-xl font-bold text-cyan-300 mb-2 font-mono"># Capaian Pembelajaran (Fase D)</h3>
+                        <p class="text-base leading-relaxed text-slate-200">Peserta didik mampu memahami objek-objek dan instruksi dalam sebuah lingkungan pemrograman blok (visual) untuk mengembangkan program visual sederhana berdasarkan contoh-contoh yang diberikan.</p>
+                    </div>
+                    <div class="bg-slate-900/60 p-6 rounded-xl border border-slate-700/50">
+                        <h3 class="text-xl font-bold text-cyan-300 mb-4 font-mono"># Tujuan Pembelajaran Kita Hari Ini:</h3>
+                        <ul class="space-y-4">
+                            <li class="flex items-start gap-3 bg-slate-800/40 p-3 rounded-lg border border-slate-700/50 hover:border-cyan-500/30 transition-colors">
+                                <i data-lucide="check-circle-2" class="w-6 h-6 text-cyan-400 shrink-0"></i>
+                                <span>Menjelaskan konsep <strong>Algoritma</strong> sebagai urutan langkah logis dengan kalimat sendiri.</span>
+                            </li>
+                            <li class="flex items-start gap-3 bg-slate-800/40 p-3 rounded-lg border border-slate-700/50 hover:border-cyan-500/30 transition-colors">
+                                <i data-lucide="check-circle-2" class="w-6 h-6 text-cyan-400 shrink-0"></i>
+                                <span>Mengidentifikasi dan menggunakan fitur-fitur dasar pada antarmuka <strong>Scratch</strong> (Stage, Sprite, Scripts Area).</span>
+                            </li>
+                            <li class="flex items-start gap-3 bg-slate-800/40 p-3 rounded-lg border border-slate-700/50 hover:border-cyan-500/30 transition-colors">
+                                <i data-lucide="check-circle-2" class="w-6 h-6 text-cyan-400 shrink-0"></i>
+                                <span>Merangkai logika blok pemrograman <em class="text-cyan-300">Events</em>, <em class="text-cyan-300">Motion</em>, dan <em class="text-cyan-300">Looks</em> untuk membuat program animasi sederhana.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= VIEW: MATERI ================= -->
+        <section id="view-materi" class="fade-in hidden">
+            <button onclick="navigateTo('beranda', 'Beranda')" class="mb-6 flex items-center gap-2 text-cyan-400 hover:text-cyan-300 font-medium transition-colors bg-slate-900/50 px-4 py-2 rounded-full border border-cyan-500/30">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i> Kembali ke Beranda
+            </button>
+            <div class="flex flex-col md:flex-row gap-6">
+                <!-- Sidebar Materi Nav -->
+                <div class="w-full md:w-1/3 lg:w-1/4">
+                    <div class="glass-card p-4 sticky top-24">
+                        <h3 class="font-bold text-lg mb-4 px-2 text-cyan-400 border-b border-cyan-500/30 pb-2 glow-text">Daftar Materi</h3>
+                        <ul class="space-y-2 font-mono text-sm">
+                            <li><button onclick="showMateriTab('materi-1')" id="btn-materi-1" class="w-full text-left px-4 py-3 rounded-xl bg-cyan-600/80 text-white font-bold border border-cyan-400 shadow-[0_0_10px_rgba(6,182,212,0.5)] transition-all">1. Konsep Algoritma</button></li>
+                            <li><button onclick="showMateriTab('materi-2')" id="btn-materi-2" class="w-full text-left px-4 py-3 rounded-xl text-slate-300 hover:bg-slate-800/80 border border-transparent hover:border-cyan-500/30 transition-all">2. Mengenal Scratch</button></li>
+                            <li><button onclick="showMateriTab('materi-3')" id="btn-materi-3" class="w-full text-left px-4 py-3 rounded-xl text-slate-300 hover:bg-slate-800/80 border border-transparent hover:border-cyan-500/30 transition-all">3. Blok Perintah Dasar</button></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Content Area -->
+                <div class="w-full md:w-2/3 lg:w-3/4 glass-card p-6 md:p-8">
+                    <!-- Materi 1 -->
+                    <div id="materi-1" class="materi-content block">
+                        <div class="flex items-center gap-3 mb-6 border-b border-cyan-500/20 pb-4">
+                            <i data-lucide="cpu" class="w-8 h-8 text-cyan-400 glow-icon"></i>
+                            <h2 class="text-2xl font-bold glow-text">Konsep Algoritma</h2>
+                        </div>
+                        <img src="https://images.unsplash.com/photo-1516116216624-53e697fedbea?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="" class="w-full h-48 md:h-64 object-cover rounded-xl mb-6 opacity-80 border border-cyan-500/30 shadow-[0_0_15px_rgba(6,182,212,0.2)]">
+                        <div class="space-y-4 text-slate-200 leading-relaxed text-sm md:text-base">
+                            <p><strong class="text-cyan-300">Algoritma</strong> adalah urutan langkah-langkah logis dan terstruktur untuk menyelesaikan suatu masalah atau mencapai tujuan tertentu. Komputer sangat pintar, tetapi ia tidak bisa berpikir sendiri. Ia membutuhkan algoritma (instruksi berurutan) dari manusia.</p>
+                            <div class="bg-slate-900/80 p-6 rounded-xl border border-cyan-500/30 my-4 border-l-4 border-l-cyan-400 shadow-inner">
+                                <h4 class="font-bold text-cyan-300 mb-3 flex items-center gap-2"><i data-lucide="lightbulb" class="w-5 h-5"></i> Analogi Sederhana: "Robot Buta"</h4>
+                                <p class="text-sm">Bayangkan kamu memiliki robot pembuat mie instan. Kamu tidak bisa hanya bilang "Buatkan mie!". Kamu harus memberi algoritma detail:</p>
+                                <ol class="list-decimal pl-5 mt-3 space-y-2 text-slate-300 font-mono text-sm bg-black/30 p-4 rounded-lg">
+                                    <li>Buka bungkus mie.</li>
+                                    <li>Rebus air di panci hingga mendidih.</li>
+                                    <li>Masukkan mie ke dalam air mendidih.</li>
+                                    <li>Tunggu 3 menit.</li>
+                                    <li>Tiriskan mie dan campur dengan bumbu.</li>
+                                </ol>
+                                <p class="mt-3 text-sm italic text-cyan-200">Jika urutannya salah (misal: masukkan mie sebelum merebus air), hasilnya akan gagal (Error/Bug).</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Materi 2 -->
+                    <div id="materi-2" class="materi-content hidden">
+                        <div class="flex items-center gap-3 mb-6 border-b border-cyan-500/20 pb-4">
+                            <i data-lucide="monitor" class="w-8 h-8 text-cyan-400 glow-icon"></i>
+                            <h2 class="text-2xl font-bold glow-text">Mengenal Antarmuka Scratch</h2>
+                        </div>
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Scratch_3.0_GUI.png/800px-Scratch_3.0_GUI.png" alt="" class="w-full h-auto rounded-xl mb-6 border border-cyan-500/30 shadow-[0_0_15px_rgba(6,182,212,0.2)]">
+                        <div class="grid md:grid-cols-2 gap-4 text-slate-200 text-sm">
+                            <div class="bg-slate-900/60 p-5 rounded-xl border border-slate-700/50 hover:border-cyan-500/50 transition-colors">
+                                <h4 class="font-bold text-cyan-400 mb-2 flex items-center gap-2"><i data-lucide="box" class="w-4 h-4"></i> Block Palette</h4>
+                                <p class="text-slate-400">Kumpulan balok kode warna-warni di sebelah kiri. Disini kita mengambil perintah-perintah.</p>
+                            </div>
+                            <div class="bg-slate-900/60 p-5 rounded-xl border border-slate-700/50 hover:border-cyan-500/50 transition-colors">
+                                <h4 class="font-bold text-cyan-400 mb-2 flex items-center gap-2"><i data-lucide="layout-dashboard" class="w-4 h-4"></i> Scripts Area</h4>
+                                <p class="text-slate-400">Area kosong di tengah tempat kita menyusun dan menempelkan blok-blok logika.</p>
+                            </div>
+                            <div class="bg-slate-900/60 p-5 rounded-xl border border-slate-700/50 hover:border-cyan-500/50 transition-colors">
+                                <h4 class="font-bold text-cyan-400 mb-2 flex items-center gap-2"><i data-lucide="monitor-play" class="w-4 h-4"></i> Stage (Panggung)</h4>
+                                <p class="text-slate-400">Layar di kanan atas tempat animasi atau game kita ditampilkan dan dijalankan.</p>
+                            </div>
+                            <div class="bg-slate-900/60 p-5 rounded-xl border border-slate-700/50 hover:border-cyan-500/50 transition-colors">
+                                <h4 class="font-bold text-cyan-400 mb-2 flex items-center gap-2"><i data-lucide="ghost" class="w-4 h-4"></i> Sprite</h4>
+                                <p class="text-slate-400">Karakter atau objek yang kita program (Contoh defaultnya adalah Si Kucing Orange).</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Materi 3 -->
+                    <div id="materi-3" class="materi-content hidden">
+                        <div class="flex items-center gap-3 mb-6 border-b border-cyan-500/20 pb-4">
+                            <i data-lucide="blocks" class="w-8 h-8 text-cyan-400 glow-icon"></i>
+                            <h2 class="text-2xl font-bold glow-text">Blok Perintah Dasar</h2>
+                        </div>
+                        <p class="text-slate-200 mb-6">Di Scratch, kode perintah dibagi berdasarkan warna agar mudah diingat. Mari pelajari 3 blok paling penting untuk pemula:</p>
+                        
+                        <div class="space-y-4">
+                            <!-- Block 1 -->
+                            <div class="flex gap-4 items-start bg-slate-900/60 p-5 rounded-xl border border-slate-700/50 hover:border-cyan-500/30 transition-colors">
+                                <div class="bg-yellow-400 text-yellow-900 font-bold px-3 py-1.5 rounded-t-lg rounded-br-lg border-b-4 border-yellow-600 shadow-sm shrink-0 mt-1 whitespace-nowrap text-sm font-mono">When ⚑ clicked</div>
+                                <div>
+                                    <h4 class="font-bold text-yellow-400 text-lg">Events (Kuning) - Pemicu</h4>
+                                    <p class="text-sm text-slate-300 mt-1">Blok ini HARUS ada di posisi paling atas. Berfungsi sebagai tombol "Start". Jika bendera hijau diklik, maka blok di bawahnya akan berjalan.</p>
+                                </div>
+                            </div>
+                            <!-- Block 2 -->
+                            <div class="flex gap-4 items-start bg-slate-900/60 p-5 rounded-xl border border-slate-700/50 hover:border-cyan-500/30 transition-colors">
+                                <div class="bg-blue-500 text-white font-bold px-3 py-1.5 rounded-lg border-b-4 border-blue-700 shadow-sm shrink-0 mt-1 whitespace-nowrap text-sm font-mono">move <span class="bg-white text-black px-1.5 rounded-full text-xs">10</span> steps</div>
+                                <div>
+                                    <h4 class="font-bold text-blue-400 text-lg">Motion (Biru) - Gerakan</h4>
+                                    <p class="text-sm text-slate-300 mt-1">Berfungsi mengatur pergerakan Sprite. "Move 10 steps" artinya Sprite akan melangkah maju sebanyak 10 titik koordinat.</p>
+                                </div>
+                            </div>
+                            <!-- Block 3 -->
+                            <div class="flex gap-4 items-start bg-slate-900/60 p-5 rounded-xl border border-slate-700/50 hover:border-cyan-500/30 transition-colors">
+                                <div class="bg-purple-500 text-white font-bold px-3 py-1.5 rounded-lg border-b-4 border-purple-700 shadow-sm shrink-0 mt-1 whitespace-nowrap text-sm font-mono">say <span class="bg-white text-black px-1.5 rounded-full text-xs">Hello!</span></div>
+                                <div>
+                                    <h4 class="font-bold text-purple-400 text-lg">Looks (Ungu) - Tampilan</h4>
+                                    <p class="text-sm text-slate-300 mt-1">Berfungsi mengubah tampilan visual atau memunculkan balon percakapan seperti komik.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= VIEW: KUIS ================= -->
+        <section id="view-kuis" class="fade-in hidden">
+            <button onclick="navigateTo('beranda', 'Beranda')" class="mb-6 flex items-center gap-2 text-cyan-400 hover:text-cyan-300 font-medium transition-colors bg-slate-900/50 px-4 py-2 rounded-full border border-cyan-500/30">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i> Kembali ke Beranda
+            </button>
+            <div class="glass-card p-6 md:p-10 max-w-4xl mx-auto border-t-4 border-t-cyan-400">
+                <div class="text-center mb-10">
+                    <i data-lucide="help-circle" class="w-12 h-12 text-cyan-400 mx-auto mb-4 glow-icon"></i>
+                    <h2 class="text-3xl font-extrabold mb-2 glow-text">Uji Pemahamanmu!</h2>
+                    <p class="text-slate-300">Jawablah pertanyaan berikut untuk membuktikan bahwa kamu adalah calon Programmer andal!</p>
+                </div>
+
+                <div id="quiz-container" class="space-y-6">
+                    <!-- Q1 -->
+                    <div class="quiz-question bg-slate-900/60 p-6 rounded-2xl border border-slate-700/50 hover:border-cyan-500/30 transition-colors">
+                        <p class="font-bold text-lg mb-4 text-white">1. Urutan langkah-langkah logis untuk menyelesaikan suatu masalah disebut...</p>
+                        <div class="grid md:grid-cols-2 gap-3 font-mono text-sm">
+                            <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-600 hover:bg-cyan-900/50 hover:border-cyan-500 cursor-pointer transition-colors"><input type="radio" name="q1" value="A" class="w-4 h-4 accent-cyan-500"> <span>A. Pemrograman</span></label>
+                            <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-600 hover:bg-cyan-900/50 hover:border-cyan-500 cursor-pointer transition-colors"><input type="radio" name="q1" value="B" class="w-4 h-4 accent-cyan-500"> <span>B. Algoritma</span></label>
+                            <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-600 hover:bg-cyan-900/50 hover:border-cyan-500 cursor-pointer transition-colors"><input type="radio" name="q1" value="C" class="w-4 h-4 accent-cyan-500"> <span>C. Flowchart</span></label>
+                            <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-600 hover:bg-cyan-900/50 hover:border-cyan-500 cursor-pointer transition-colors"><input type="radio" name="q1" value="D" class="w-4 h-4 accent-cyan-500"> <span>D. Coding</span></label>
+                        </div>
+                    </div>
+                    <!-- Q2 -->
+                    <div class="quiz-question bg-slate-900/60 p-6 rounded-2xl border border-slate-700/50 hover:border-cyan-500/30 transition-colors">
+                        <p class="font-bold text-lg mb-4 text-white">2. Karakter animasi yang diprogram di dalam Scratch dikenal dengan istilah...</p>
+                        <div class="grid md:grid-cols-2 gap-3 font-mono text-sm">
+                            <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-600 hover:bg-cyan-900/50 hover:border-cyan-500 cursor-pointer transition-colors"><input type="radio" name="q2" value="A" class="w-4 h-4 accent-cyan-500"> <span>A. Object</span></label>
+                            <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-600 hover:bg-cyan-900/50 hover:border-cyan-500 cursor-pointer transition-colors"><input type="radio" name="q2" value="B" class="w-4 h-4 accent-cyan-500"> <span>B. Actor</span></label>
+                            <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-600 hover:bg-cyan-900/50 hover:border-cyan-500 cursor-pointer transition-colors"><input type="radio" name="q2" value="C" class="w-4 h-4 accent-cyan-500"> <span>C. Stage</span></label>
+                            <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-600 hover:bg-cyan-900/50 hover:border-cyan-500 cursor-pointer transition-colors"><input type="radio" name="q2" value="D" class="w-4 h-4 accent-cyan-500"> <span>D. Sprite</span></label>
+                        </div>
+                    </div>
+                    <!-- Q3 -->
+                    <div class="quiz-question bg-slate-900/60 p-6 rounded-2xl border border-slate-700/50 hover:border-cyan-500/30 transition-colors">
+                        <p class="font-bold text-lg mb-4 text-white">3. Blok perintah "When ⚑ Clicked" terdapat pada kategori warna...</p>
+                        <div class="grid md:grid-cols-2 gap-3 font-mono text-sm">
+                            <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-600 hover:bg-cyan-900/50 hover:border-cyan-500 cursor-pointer transition-colors"><input type="radio" name="q3" value="A" class="w-4 h-4 accent-cyan-500"> <span>A. Motion (Biru)</span></label>
+                            <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-600 hover:bg-cyan-900/50 hover:border-cyan-500 cursor-pointer transition-colors"><input type="radio" name="q3" value="B" class="w-4 h-4 accent-cyan-500"> <span>B. Events (Kuning)</span></label>
+                            <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-600 hover:bg-cyan-900/50 hover:border-cyan-500 cursor-pointer transition-colors"><input type="radio" name="q3" value="C" class="w-4 h-4 accent-cyan-500"> <span>C. Looks (Ungu)</span></label>
+                            <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-600 hover:bg-cyan-900/50 hover:border-cyan-500 cursor-pointer transition-colors"><input type="radio" name="q3" value="D" class="w-4 h-4 accent-cyan-500"> <span>D. Control (Oranye)</span></label>
+                        </div>
+                    </div>
+
+                    <div class="text-center pt-8">
+                        <button onclick="submitQuiz()" class="bg-cyan-500/80 hover:bg-cyan-400 text-white font-bold py-4 px-10 rounded-full shadow-[0_0_15px_rgba(6,182,212,0.5)] border border-cyan-300 transition-transform transform hover:scale-105 uppercase tracking-wider">
+                            Kumpulkan & Lihat Nilai
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Hasil Kuis Modal Area -->
+                <div id="quiz-result" class="hidden mt-8 text-center p-10 bg-slate-900/80 rounded-3xl border border-cyan-500/50 shadow-[0_0_30px_rgba(6,182,212,0.2)]">
+                    <i data-lucide="award" class="w-16 h-16 text-yellow-400 mx-auto mb-4 drop-shadow-[0_0_10px_rgba(250,204,21,0.8)]"></i>
+                    <h3 class="text-2xl font-bold mb-2 text-white">Nilai Kamu:</h3>
+                    <div class="text-7xl font-black glow-text text-cyan-400 mb-6 font-mono" id="score-display">100</div>
+                    <p id="feedback-display" class="text-slate-200 font-medium text-lg mb-8"></p>
+                    <button onclick="resetQuiz()" class="bg-transparent border border-cyan-500 text-cyan-400 hover:bg-cyan-500/20 px-6 py-2 rounded-full transition-colors font-medium">Ulangi Kuis</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= VIEW: PERINGKAT ================= -->
+        <section id="view-peringkat" class="fade-in hidden">
+            <button onclick="navigateTo('beranda', 'Beranda')" class="mb-6 flex items-center gap-2 text-cyan-400 hover:text-cyan-300 font-medium transition-colors bg-slate-900/50 px-4 py-2 rounded-full border border-cyan-500/30">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i> Kembali ke Beranda
+            </button>
+            <div class="max-w-4xl mx-auto glass-card p-6 md:p-10 border-t-4 border-t-cyan-400">
+                <div class="text-center mb-10 border-b border-cyan-500/20 pb-8">
+                    <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-cyan-500/20 text-cyan-400 mb-4 shadow-[0_0_20px_rgba(6,182,212,0.4)] border border-cyan-400/50"><i data-lucide="trophy" class="w-10 h-10 glow-icon"></i></div>
+                    <h2 class="text-3xl font-extrabold text-white glow-text">Papan Peringkat Kelas 8</h2>
+                    <p class="text-cyan-200 mt-2 font-mono">Daftar detektif logika terbaik minggu ini!</p>
+                </div>
+                
+                <div class="overflow-x-auto bg-slate-900/60 rounded-2xl border border-slate-700/50">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-cyan-500/30 text-cyan-400 text-sm uppercase tracking-wider font-bold bg-cyan-950/40">
+                                <th class="p-5 w-20 text-center">Rank</th>
+                                <th class="p-5">Nama Peserta</th>
+                                <th class="p-5 text-center">Kelas</th>
+                                <th class="p-5 text-right">Skor</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-white">
+                            <!-- Top 1 -->
+                            <tr class="border-b border-slate-700/50 bg-yellow-500/10 hover:bg-slate-800 transition-colors">
+                                <td class="p-5 text-center"><span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-yellow-500 text-yellow-900 font-black shadow-[0_0_10px_rgba(234,179,8,0.5)]">1</span></td>
+                                <td class="p-5 font-bold flex items-center gap-4 text-lg">
+                                    <img src="https://ui-avatars.com/api/?name=Zahra+Syifa&background=random" class="w-10 h-10 rounded-full border-2 border-yellow-500" alt="avatar"> 
+                                    Zahra tu syifa
+                                </td>
+                                <td class="p-5 text-center text-slate-300 font-mono">8.1</td>
+                                <td class="p-5 text-right font-mono text-2xl font-bold text-yellow-400 drop-shadow-md">100</td>
+                            </tr>
+                            <!-- Top 2 -->
+                            <tr class="border-b border-slate-700/50 bg-slate-300/10 hover:bg-slate-800 transition-colors">
+                                <td class="p-5 text-center"><span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-slate-300 text-slate-800 font-black shadow-[0_0_10px_rgba(203,213,225,0.5)]">2</span></td>
+                                <td class="p-5 font-bold flex items-center gap-4 text-lg">
+                                    <img src="https://ui-avatars.com/api/?name=Akmal+Putra&background=random" class="w-10 h-10 rounded-full border-2 border-slate-300" alt="avatar"> 
+                                    M. Akmal Putra Junaidi
+                                </td>
+                                <td class="p-5 text-center text-slate-300 font-mono">8.2</td>
+                                <td class="p-5 text-right font-mono text-2xl font-bold text-slate-200 drop-shadow-md">100</td>
+                            </tr>
+                            <!-- Top 3 -->
+                            <tr class="border-b border-slate-700/50 bg-orange-700/20 hover:bg-slate-800 transition-colors">
+                                <td class="p-5 text-center"><span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-orange-500 text-orange-900 font-black shadow-[0_0_10px_rgba(249,115,22,0.5)]">3</span></td>
+                                <td class="p-5 font-bold flex items-center gap-4 text-lg">
+                                    <img src="https://ui-avatars.com/api/?name=Muhammad+Raffa&background=random" class="w-10 h-10 rounded-full border-2 border-orange-500" alt="avatar"> 
+                                    Muhammad Raffa
+                                </td>
+                                <td class="p-5 text-center text-slate-300 font-mono">8.1</td>
+                                <td class="p-5 text-right font-mono text-2xl font-bold text-orange-400 drop-shadow-md">90</td>
+                            </tr>
+                            <!-- Regular Rows -->
+                            <tr class="border-b border-slate-700/50 hover:bg-slate-800/80 transition-colors">
+                                <td class="p-5 text-center text-slate-400 font-bold font-mono">4</td>
+                                <td class="p-5 text-slate-200 font-medium">Afifah Az-Zahra</td>
+                                <td class="p-5 text-center text-slate-400 font-mono">8.2</td>
+                                <td class="p-5 text-right font-mono text-xl text-cyan-200">90</td>
+                            </tr>
+                            <tr class="hover:bg-slate-800/80 transition-colors">
+                                <td class="p-5 text-center text-slate-400 font-bold font-mono">5</td>
+                                <td class="p-5 text-slate-200 font-medium">Nicolly Anjelika Khetten</td>
+                                <td class="p-5 text-center text-slate-400 font-mono">8.2</td>
+                                <td class="p-5 text-right font-mono text-xl text-cyan-200">80</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= VIEW: GAME ================= -->
+        <section id="view-game" class="fade-in hidden h-full">
+            <button onclick="navigateTo('beranda', 'Beranda')" class="mb-6 flex items-center gap-2 text-cyan-400 hover:text-cyan-300 font-medium transition-colors bg-slate-900/50 px-4 py-2 rounded-full border border-cyan-500/30">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i> Kembali ke Beranda
+            </button>
+            <div class="glass-card p-4 border border-cyan-500/50 shadow-[0_0_20px_rgba(6,182,212,0.2)] flex flex-col items-center">
+                <div class="w-full flex flex-col md:flex-row justify-between items-center px-6 py-4 mb-4 bg-slate-900/80 rounded-xl border border-slate-700/50">
+                    <span class="font-bold text-cyan-400 flex items-center gap-3 glow-text text-lg mb-2 md:mb-0"><i data-lucide="monitor-play" class="w-6 h-6"></i> Scratch Lab Workspace</span>
+                    <a href="https://scratch.mit.edu/projects/editor/" target="_blank" class="text-sm bg-cyan-600/80 hover:bg-cyan-500 text-white px-5 py-2 rounded-full transition-colors border border-cyan-400 font-semibold flex items-center gap-2">
+                        Buka Fullscreen <i data-lucide="external-link" class="w-4 h-4"></i>
+                    </a>
+                </div>
+                <!-- Embed Scratch Editor -->
+                <div class="w-full h-[600px] bg-slate-800 rounded-xl overflow-hidden relative border border-slate-700">
+                    <iframe src="https://scratch.mit.edu/projects/editor/?tutorial=getStarted" width="100%" height="100%" frameborder="0" allowfullscreen class="absolute inset-0"></iframe>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-auto border-t border-cyan-500/20 bg-slate-900/80 backdrop-blur-md">
+        <div class="max-w-6xl mx-auto p-4 text-center text-cyan-500/70 text-xs font-mono font-medium">
+            &copy; 2026 Portal Informatika SMP Negeri 58 Palembang | Tema Estetik Lofi
+        </div>
+    </footer>
+
+    <!-- Interactive Scripts -->
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // Sidebar Logic
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            
+            if (sidebar.classList.contains('-translate-x-full')) {
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.remove('hidden');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('hidden');
+            }
+        }
+
+        // Navigation Logic
+        function navigateTo(viewName, titleText) {
+            // Tutup sidebar jika sedang terbuka
+            const sidebar = document.getElementById('sidebar');
+            if(sidebar && !sidebar.classList.contains('-translate-x-full')) {
+                toggleSidebar();
+            }
+
+            // Update Title Text in Navbar
+            document.getElementById('nav-title').innerText = titleText;
+
+            // Hide all views
+            const views = document.querySelectorAll('main > section');
+            views.forEach(view => {
+                view.classList.remove('block');
+                view.classList.add('hidden');
+            });
+
+            // Show targeted view
+            const target = document.getElementById('view-' + viewName);
+            if(target) {
+                target.classList.remove('hidden');
+                target.classList.add('block');
+            }
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Sidebar Materi Tabs Logic
+        function showMateriTab(tabId) {
+            // Hide all contents
+            const contents = document.querySelectorAll('.materi-content');
+            contents.forEach(c => {
+                c.classList.remove('block');
+                c.classList.add('hidden');
+            });
+
+            // Reset all buttons styling
+            const buttons = [document.getElementById('btn-materi-1'), document.getElementById('btn-materi-2'), document.getElementById('btn-materi-3')];
+            buttons.forEach(btn => {
+                if(btn) {
+                    btn.classList.remove('bg-cyan-600/80', 'text-white', 'border-cyan-400', 'shadow-[0_0_10px_rgba(6,182,212,0.5)]');
+                    btn.classList.add('text-slate-300', 'hover:bg-slate-800/80', 'border-transparent', 'hover:border-cyan-500/30');
+                }
+            });
+
+            // Show selected content
+            document.getElementById(tabId).classList.remove('hidden');
+            document.getElementById(tabId).classList.add('block');
+
+            // Highlight selected button
+            const activeBtn = document.getElementById('btn-' + tabId);
+            activeBtn.classList.remove('text-slate-300', 'hover:bg-slate-800/80', 'border-transparent', 'hover:border-cyan-500/30');
+            activeBtn.classList.add('bg-cyan-600/80', 'text-white', 'border-cyan-400', 'shadow-[0_0_10px_rgba(6,182,212,0.5)]');
+        }
+
+        // Quiz Logic
+        const correctAnswers = { q1: 'B', q2: 'D', q3: 'B' };
+
+        function submitQuiz() {
+            let score = 0;
+            let total = 3;
+
+            for(let key in correctAnswers) {
+                const selected = document.querySelector(`input[name="${key}"]:checked`);
+                if(selected && selected.value === correctAnswers[key]) {
+                    score += 1;
+                }
+            }
+
+            const finalScore = Math.round((score / total) * 100);
+
+            document.getElementById('quiz-container').classList.add('hidden');
+            const resultDiv = document.getElementById('quiz-result');
+            resultDiv.classList.remove('hidden');
+            resultDiv.classList.add('fade-in');
+
+            document.getElementById('score-display').innerText = finalScore;
+
+            let feedback = '';
+            if(finalScore === 100) feedback = "Luar biasa! Insting Algoritmamu sangat tajam! 🚀";
+            else if(finalScore >= 66) feedback = "Kerja bagus! Sedikit lagi kamu akan jadi ahli Scratch. 👍";
+            else feedback = "Jangan menyerah! Yuk baca lagi bagian Materi Belajar. 💪";
+
+            document.getElementById('feedback-display').innerText = feedback;
+        }
+
+        function resetQuiz() {
+            document.querySelectorAll('input[type="radio"]').forEach(radio => radio.checked = false);
+            document.getElementById('quiz-result').classList.add('hidden');
+            const container = document.getElementById('quiz-container');
+            container.classList.remove('hidden');
+            container.classList.add('fade-in');
+        }
+    </script>
+</body>
+</html>
