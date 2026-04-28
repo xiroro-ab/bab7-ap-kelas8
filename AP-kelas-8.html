@@ -23,46 +23,45 @@
         .badge-mindful { background-color: #bfdbfe; color: #1e40af; }
         .badge-meaningful { background-color: #bbf7d0; color: #166534; }
         
-        /* PENGATURAN CETAK / PRINT SUPER RAPI */
+        /* PENGATURAN CETAK / PRINT SUPER RAPI & PADAT */
         @media print {
-            /* 1. Pastikan warna dan background dicetak persis seperti di web */
             * { 
                 -webkit-print-color-adjust: exact !important; 
                 print-color-adjust: exact !important; 
             }
-            
-            body, html {
-                background-color: #f1f5f9 !important;
-            }
-            
-            /* Sembunyikan elemen non-cetak */
+            body, html { background-color: #f1f5f9 !important; }
             .no-print { display: none !important; }
             
-            /* Pemecah halaman manual */
+            /* Kompresi spasi agar lebih padat dan hemat kertas */
+            section { padding: 1.5rem !important; margin-bottom: 0.75rem !important; }
+            .gap-8 { gap: 1rem !important; }
+            .gap-6 { gap: 1rem !important; }
+            .mb-8 { margin-bottom: 1rem !important; }
+            .mb-6 { margin-bottom: 0.75rem !important; }
+            .space-y-6 > * + * { margin-top: 0.75rem !important; }
+            .space-y-5 > * + * { margin-top: 0.5rem !important; }
+            
             .print-page-break { 
                 page-break-before: always !important; 
                 break-before: page !important; 
             }
             
-            /* 2. Cegah judul tertinggal sendirian di akhir halaman */
             h1, h2, h3, h4, h5, h6 { 
                 page-break-after: avoid !important; 
                 break-after: avoid !important; 
             }
 
-            /* 3. FIX BUG CHROME PADA TABEL: Matikan fitur scroll (overflow) saat di-print agar tabel tidak terpotong! */
+            /* FIX BUG CHROME: Mematikan overflow tanpa display block yang merusak tabel */
             .overflow-x-auto, .overflow-hidden {
                 overflow: visible !important;
-                display: block !important;
             }
             
-            /* 4. ATURAN TABEL YANG BENAR: Biarkan tabel mengalir, tapi jangan potong baris (TR) di tengah */
+            /* TABEL RAPI: Biarkan tabel mengalir, jangan potong baris (TR) di tengah */
             table { page-break-inside: auto !important; width: 100% !important; border-collapse: collapse !important; }
             tr { page-break-inside: avoid !important; break-inside: avoid !important; page-break-after: auto !important; }
-            td, th { page-break-inside: avoid !important; break-inside: avoid !important; }
-            thead { display: table-header-group !important; } /* Mengulang header tabel jika pindah halaman */
+            td, th { page-break-inside: avoid !important; break-inside: avoid !important; padding: 0.4rem !important;}
+            thead { display: table-header-group !important; } 
             
-            /* 5. Lindungi elemen gambar dan grup khusus agar tidak terbelah */
             .avoid-break, img { 
                 page-break-inside: avoid !important; 
                 break-inside: avoid !important; 
@@ -78,7 +77,7 @@
 <body class="antialiased selection:bg-blue-200 selection:text-blue-900">
 
     <!-- Header Section -->
-    <header class="gradient-bg text-white py-10 px-6 relative overflow-hidden shadow-lg avoid-break">
+    <header class="gradient-bg text-white py-8 px-6 relative overflow-hidden shadow-lg avoid-break">
         <div class="absolute top-0 right-0 opacity-10 pointer-events-none">
             <svg width="300" height="300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
         </div>
@@ -92,7 +91,8 @@
             <h1 class="text-3xl md:text-4xl font-bold mb-2">PERENCANAAN PEMBELAJARAN MENDALAM (PPM)</h1>
             <p class="text-lg md:text-xl text-blue-100 mb-6 font-light">Modul Ajar Informatika - Algoritma & Pemrograman</p>
             
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm bg-white/10 p-5 rounded-xl backdrop-blur-sm border border-white/20">
+            <!-- Ditambahkan print:grid-cols-4 untuk memaksa 4 kolom di kertas cetak -->
+            <div class="grid grid-cols-2 md:grid-cols-4 print:grid-cols-4 gap-4 text-sm bg-white/10 p-5 rounded-xl backdrop-blur-sm border border-white/20">
                 <div><p class="text-blue-200 uppercase text-[10px] font-bold">Nama Penyusun</p><p class="font-medium">Aris Bermansyah, S.Kom</p></div>
                 <div><p class="text-blue-200 uppercase text-[10px] font-bold">Institusi</p><p class="font-medium">SMP Negeri 58 Palembang</p></div>
                 <div><p class="text-blue-200 uppercase text-[10px] font-bold">Tahun</p><p class="font-medium">2026</p></div>
@@ -137,7 +137,8 @@
         <!-- II. DESAIN PEMBELAJARAN -->
         <section class="bg-white rounded-xl shadow-md p-8 border-t-4 border-indigo-500 card-hover">
             <h2 class="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-2"><i data-lucide="layout-template" class="text-indigo-500"></i> II. DESAIN PEMBELAJARAN</h2>
-            <div class="grid md:grid-cols-2 gap-6 text-sm">
+            <!-- Ditambahkan print:grid-cols-2 -->
+            <div class="grid md:grid-cols-2 print:grid-cols-2 gap-6 text-sm">
                 <div class="space-y-4">
                     <div class="avoid-break">
                         <h3 class="font-bold text-indigo-700 bg-indigo-50 px-3 py-1 rounded">Capaian Pembelajaran</h3>
@@ -238,7 +239,8 @@
         <!-- IV. ASESMEN PEMBELAJARAN -->
         <section class="bg-white rounded-xl shadow-md p-8 border-t-4 border-rose-500 card-hover">
             <h2 class="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-2"><i data-lucide="clipboard-list" class="text-rose-500"></i> IV. ASESMEN PEMBELAJARAN</h2>
-            <div class="grid md:grid-cols-3 gap-4 text-sm">
+            <!-- Ditambahkan print:grid-cols-3 -->
+            <div class="grid md:grid-cols-3 print:grid-cols-3 gap-4 text-sm">
                 <div class="bg-rose-50 p-4 rounded-lg border border-rose-100 avoid-break">
                     <h3 class="font-bold text-rose-700 mb-2 border-b border-rose-200 pb-2">Asesmen Awal (Diagnostik)</h3>
                     <p class="text-slate-700">Dilakukan melalui tanya jawab lisan di awal: "Siapa yang suka main game? Tahu cara karakter merespons tombol? Ada yang pernah mencoba Scratch?". Digunakan untuk memetakan kesiapan peserta didik.</p>
@@ -263,7 +265,8 @@
         <!-- V. REFLEKSI & TANDA TANGAN -->
         <section class="bg-white rounded-xl shadow-md p-8 border-t-4 border-teal-500 card-hover avoid-break">
             <h2 class="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-2"><i data-lucide="lightbulb" class="text-teal-500"></i> V. REFLEKSI GURU DAN PESERTA DIDIK</h2>
-            <div class="grid md:grid-cols-2 gap-6 text-sm mb-12">
+            <!-- Ditambahkan print:grid-cols-2 -->
+            <div class="grid md:grid-cols-2 print:grid-cols-2 gap-6 text-sm mb-12">
                 <div>
                     <h3 class="font-bold text-teal-700 mb-2">A. Refleksi Guru</h3>
                     <p class="text-slate-600 bg-teal-50 p-3 rounded border border-teal-100">Refleksi dilakukan untuk mengetahui kekurangan dan kelebihan selama pembelajaran, mengevaluasi metode analogi "Robot Buta", dan manajemen waktu di laboratorium (Lembar terlampir).</p>
@@ -303,7 +306,8 @@
                     <i data-lucide="monitor"></i>
                 </div>
                 <div class="p-6 text-sm text-slate-700">
-                    <div class="mb-6 flex flex-col md:flex-row gap-6 items-center border-b border-slate-200 pb-6 bg-orange-50/50 p-4 rounded-xl avoid-break">
+                    <!-- Ditambahkan print:flex-row agar LKPD ringkas -->
+                    <div class="mb-6 flex flex-col md:flex-row print:flex-row gap-6 items-center border-b border-slate-200 pb-6 bg-orange-50/50 p-4 rounded-xl avoid-break">
                         <!-- QR Code Website MPI -->
                         <div class="flex flex-col items-center text-center">
                             <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://xiroro-ab.github.io/bab7-ap-kelas8/" alt="" class="w-24 h-24 object-contain drop-shadow-md border-4 border-white rounded-lg">
@@ -314,7 +318,8 @@
                             <h3 class="text-2xl font-black text-orange-600 mb-4 uppercase flex items-center gap-2">
                                 <i data-lucide="gamepad-2"></i> Misi: Animator Game Pertama!
                             </h3>
-                            <div class="grid md:grid-cols-2 gap-4 w-full bg-white p-4 rounded-lg border border-orange-100 shadow-sm">
+                            <!-- Ditambahkan print:grid-cols-2 -->
+                            <div class="grid md:grid-cols-2 print:grid-cols-2 gap-4 w-full bg-white p-4 rounded-lg border border-orange-100 shadow-sm">
                                 <div class="flex items-end gap-2"><div class="font-bold text-slate-600">Nama Kelompok:</div><div class="border-b-2 border-slate-300 flex-1 h-5"></div></div>
                                 <div class="flex items-end gap-2"><div class="font-bold text-slate-600">Tanggal:</div><div class="border-b-2 border-slate-300 flex-1 h-5"></div></div>
                                 <div class="flex items-end gap-2"><div class="font-bold text-slate-600">Anggota 1:</div><div class="border-b-2 border-slate-300 flex-1 h-5"></div></div>
@@ -338,7 +343,8 @@
                     </div>
 
                     <h4 class="font-bold text-lg mb-2 text-slate-800">C. Langkah-langkah Kegiatan (Petunjuk)</h4>
-                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 mb-6 flex flex-col md:flex-row gap-6 items-center avoid-break">
+                    <!-- Ditambahkan print:flex-row agar merapat bersebelahan -->
+                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 mb-6 flex flex-col md:flex-row print:flex-row gap-6 items-center avoid-break">
                         <div class="flex-1">
                             <ol class="list-decimal pl-5 space-y-4">
                                 <li class="pl-1">Buka aplikasi Scratch. Biarkan karakter kucing (Sprite 1) tetap ada di area Stage.</li>
@@ -350,7 +356,7 @@
                         </div>
                         
                         <!-- Ilustrasi Blok -->
-                        <div class="w-full md:w-5/12 bg-white p-4 rounded-lg shadow-sm border border-slate-200 flex flex-col items-center justify-center">
+                        <div class="w-full md:w-5/12 print:w-5/12 bg-white p-4 rounded-lg shadow-sm border border-slate-200 flex flex-col items-center justify-center">
                             <div class="flex flex-col space-y-1">
                                 <div class="bg-yellow-400 text-yellow-900 font-bold px-4 py-2 rounded-t-xl rounded-br-lg border-b-4 border-yellow-500 w-48 shadow">When ⚑ clicked</div>
                                 <div class="bg-blue-500 text-white font-bold px-4 py-2 rounded-r-lg border-b-4 border-blue-600 w-48 shadow ml-2">move <span class="bg-white text-black px-2 rounded-full">50</span> steps</div>
@@ -456,12 +462,13 @@
                 </div>
             </div>
 
-            <div class="grid md:grid-cols-2 gap-8 print-page-break">
+            <!-- Ditambahkan print:grid-cols-2 untuk kembaran Layout Lampiran -->
+            <div class="grid md:grid-cols-2 print:grid-cols-2 gap-8 print-page-break">
                 <!-- LAMPIRAN 3: REFLEKSI GURU -->
                 <div class="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden avoid-break">
                     <div class="bg-slate-800 text-white p-4 font-bold flex items-center gap-2"><i data-lucide="user-check"></i> Lampiran 3: LEMBAR REFLEKSI GURU</div>
                     <div class="p-5 text-sm text-slate-700">
-                        <div class="mb-6 grid grid-cols-2 gap-3 bg-teal-50 p-4 rounded-lg border border-teal-100">
+                        <div class="mb-6 grid grid-cols-2 print:grid-cols-2 gap-3 bg-teal-50 p-4 rounded-lg border border-teal-100">
                             <div class="font-medium text-teal-800 border-b border-teal-200 pb-1">Nama: Aris Bermansyah, S.Kom</div>
                             <div class="font-medium text-teal-800 border-b border-teal-200 pb-1">Kelas: VIII</div>
                             <div class="font-medium text-teal-800 border-b border-teal-200 pb-1">Topik: Algoritma & Scratch</div>
@@ -509,7 +516,7 @@
             </div>
 
             <!-- LAMPIRAN 5 & 6 -->
-            <div class="grid md:grid-cols-2 gap-8 mt-8 print-page-break">
+            <div class="grid md:grid-cols-2 print:grid-cols-2 gap-8 mt-8 print-page-break">
                 <!-- LAMPIRAN 5: MEDIA INTERAKTIF -->
                 <div class="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden flex flex-col avoid-break">
                     <div class="bg-slate-800 text-white p-4 font-bold flex items-center gap-2"><i data-lucide="image"></i> Lampiran 5: MEDIA PEMBELAJARAN</div>
