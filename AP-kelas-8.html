@@ -29,7 +29,6 @@
             * { 
                 -webkit-print-color-adjust: exact !important; 
                 print-color-adjust: exact !important; 
-                overflow: visible !important; 
             }
             
             body, html {
@@ -49,19 +48,15 @@
             h1, h2, h3, h4, h5, h6 { 
                 page-break-after: avoid !important; 
                 break-after: avoid !important; 
-                page-break-inside: avoid !important;
-                break-inside: avoid !important;
             }
             
-            /* 3. Lindungi elemen gambar, tabel, dan grup khusus agar tidak terbelah */
-            .avoid-break, img, table, tr, th, td, li { 
-                page-break-inside: avoid !important; 
-                break-inside: avoid !important; 
-                display: block !important; /* Paksa blok agar browser mudah menghitung batasnya */
-            }
-
-            /* 4. FIX BUG GOOGLE CHROME: Lindungi elemen di dalam Grid/Flex agar tidak terpotong */
-            .grid > div, .flex > div, .space-y-4 > div, .space-y-5 > div, .space-y-6 > div {
+            /* 3. ATURAN TABEL YANG BENAR: Biarkan tabel mengalir, tapi jangan potong baris (TR) di tengah */
+            table { page-break-inside: auto !important; width: 100% !important; }
+            tr { page-break-inside: avoid !important; page-break-after: auto !important; }
+            thead { display: table-header-group !important; } /* Mengulang header tabel jika pindah halaman */
+            
+            /* 4. Lindungi elemen gambar dan grup khusus agar tidak terbelah */
+            .avoid-break, img { 
                 page-break-inside: avoid !important; 
                 break-inside: avoid !important; 
             }
