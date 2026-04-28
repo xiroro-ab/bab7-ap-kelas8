@@ -25,33 +25,28 @@
         
         /* PENGATURAN CETAK / PRINT SUPER RAPI */
         @media print {
-            /* Memaksa semua elemen yang 'overflow-hidden' menjadi 'visible' agar teks tidak kepotong di akhir halaman */
+            /* Wajib: Mencegah elemen terpotong setengah halaman menghilang (mengamankan overflow) */
             * { overflow: visible !important; }
             
-            body { background-color: white !important; }
+            /* Sembunyikan elemen non-cetak (seperti tombol print) */
             .no-print { display: none !important; }
             
-            /* Menghilangkan bayangan dan menyesuaikan border untuk print */
-            .card-hover, .shadow-md, .shadow-sm, .shadow-lg { 
-                box-shadow: none !important; 
-                border: 1px solid #cbd5e1 !important; 
-            }
-            
+            /* Pemecah halaman manual */
             .print-page-break { page-break-before: always !important; break-before: page !important; }
             
-            /* Mencegah terpotong HANYA pada elemen kecil (judul, gambar, baris tabel). 
-               JANGAN pakaikan ini di div/section besar agar tidak ada halaman kosong! */
-            h1, h2, h3, h4, h5, img, tr, th, td, .avoid-break { 
+            /* 1. Cegah judul tertinggal sendirian di akhir halaman! (Tarik ke halaman berikutnya jika isinya pindah) */
+            h1, h2, h3, h4, h5 { 
+                page-break-after: avoid !important; 
+                break-after: avoid !important; 
+            }
+            
+            /* 2. Hanya lindungi elemen kecil ini yang benar-benar tidak boleh terpotong tengahnya */
+            img, tr, th, td { 
                 page-break-inside: avoid !important; 
                 break-inside: avoid !important; 
             }
-
-            /* Beri jarak antar seksi di kertas */
-            section { margin-bottom: 2cm !important; }
             
-            /* Memastikan warna background utama tetap solid di cetakan */
-            .gradient-bg { background: #0284c7 !important; color: white !important; }
-            .bg-slate-800 { background-color: #1e293b !important; color: white !important; }
+            /* KITA BIARKAN SELURUH KOTAK, BAYANGAN (SHADOW), DAN WARNA TETAP ADA SEPERTI DI HTML! */
         }
     </style>
     <style id="print-page-style">
