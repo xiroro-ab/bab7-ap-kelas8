@@ -316,7 +316,7 @@
                         
                         <div class="flex-1 w-full">
                             <h3 class="text-2xl font-black text-orange-600 mb-4 uppercase flex items-center gap-2">
-                                <i data-lucide="gamepad-2"></i> Misi: Animator Game Pertama!
+                                <i data-lucide="users"></i> Misi: Percakapan 2 Sahabat!
                             </h3>
                             <!-- Ditambahkan print:grid-cols-2 -->
                             <div class="grid md:grid-cols-2 print:grid-cols-2 gap-4 w-full bg-white p-4 rounded-lg border border-orange-100 shadow-sm">
@@ -330,52 +330,70 @@
                     
                     <div class="avoid-break mb-6">
                         <h4 class="font-bold text-lg mb-2 text-slate-800">A. Tujuan Pembelajaran</h4>
-                        <p>Mampu menyusun blok <em class="bg-yellow-100 px-1 rounded border border-yellow-200">Events</em>, <em class="bg-blue-100 px-1 rounded border border-blue-200">Motion</em>, dan <em class="bg-purple-100 px-1 rounded border border-purple-200">Looks</em> untuk membuat program animasi karakter (Sprite) sederhana.</p>
+                        <p>Mampu menambahkan <em>Sprite</em> baru dan menyusun logika sinkronisasi waktu menggunakan blok <em class="bg-yellow-100 px-1 rounded border border-yellow-200">Events</em>, <em class="bg-blue-100 px-1 rounded border border-blue-200">Motion</em>, <em class="bg-orange-100 px-1 rounded border border-orange-200">Control (Wait)</em>, dan <em class="bg-purple-100 px-1 rounded border border-purple-200">Looks</em> untuk membuat animasi percakapan 2 karakter.</p>
                     </div>
 
                     <div class="avoid-break mb-6">
                         <h4 class="font-bold text-lg mb-2 text-slate-800">B. Alat dan Bahan</h4>
                         <ul class="list-disc pl-5 space-y-1">
-                            <li>1 Unit Komputer/Laptop</li>
-                            <li>Aplikasi Scratch (Offline/Online)</li>
-                            <li>Alat Tulis</li>
+                            <li>1 Unit Komputer/Laptop & Aplikasi Scratch (Offline/Online)</li>
                         </ul>
                     </div>
 
                     <h4 class="font-bold text-lg mb-2 text-slate-800">C. Langkah-langkah Kegiatan (Petunjuk)</h4>
-                    <!-- Ditambahkan print:flex-row agar merapat bersebelahan -->
-                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 mb-6 flex flex-col md:flex-row print:flex-row gap-6 items-center avoid-break">
-                        <div class="flex-1">
-                            <ol class="list-decimal pl-5 space-y-4">
-                                <li class="pl-1">Buka aplikasi Scratch. Biarkan karakter kucing (Sprite 1) tetap ada di area Stage.</li>
-                                <li class="pl-1">Pergi ke palet warna <strong class="text-yellow-600 flex items-center gap-1"><span class="w-3 h-3 bg-yellow-400 rounded-full inline-block"></span> Kuning (Events)</strong>. Tarik blok <code class="bg-yellow-100 px-2 py-0.5 rounded border-b-2 border-r-2 border-yellow-400 shadow-sm font-semibold text-yellow-800 inline-block">When ⚑ Clicked</code> ke area *Scripts*.</li>
-                                <li class="pl-1">Pergi ke palet warna <strong class="text-blue-600 flex items-center gap-1"><span class="w-3 h-3 bg-blue-500 rounded-full inline-block"></span> Biru (Motion)</strong>. Tarik blok <code class="bg-blue-100 px-2 py-0.5 rounded border-b-2 border-r-2 border-blue-400 shadow-sm font-semibold text-blue-800 inline-block">Move (10) steps</code> dan tempelkan di bawah blok kuning. <em>(Ubah angka 10 menjadi 50)</em>.</li>
-                                <li class="pl-1">Pergi ke palet warna <strong class="text-purple-600 flex items-center gap-1"><span class="w-3 h-3 bg-purple-500 rounded-full inline-block"></span> Ungu (Looks)</strong>. Tarik blok <code class="bg-purple-100 px-2 py-0.5 rounded border-b-2 border-r-2 border-purple-400 shadow-sm font-semibold text-purple-800 inline-block">Say Hello! for (2) seconds</code> dan tempelkan di bawah blok biru.</li>
-                                <li class="pl-1">Klik ikon <strong>Bendera Hijau ⚑</strong> di atas panggung (Stage). Amati apa yang terjadi!</li>
+                    <!-- CLASS 'avoid-break' DIHAPUS DARI SINI AGAR TEKS BISA MENGALIR KE HALAMAN BAWAH -->
+                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 mb-6 flex flex-col items-center">
+                        <div class="w-full mb-6">
+                            <ol class="list-decimal pl-5 space-y-3 text-sm">
+                                <li class="pl-1">Buka aplikasi Scratch. Biarkan karakter kucing (Sprite 1) tetap ada, lalu <strong>tambahkan 1 karakter baru (Sprite 2)</strong> dari menu tombol kucing bertanda <code>+</code> (Choose a Sprite) di pojok kanan bawah. Letakkan agak saling berhadapan.</li>
+                                <li class="pl-1 text-orange-600 font-bold">Pastikan kamu mengklik gambar Sprite 1 (Kucing) di menu bawah sebelum membuat kode ini!</li>
+                                <li class="pl-1">Susun balok untuk <strong>Kucing</strong>: Tarik blok <code>When ⚑ Clicked</code> (Kuning), tempel dengan blok <code>move 50 steps</code> (Biru), lalu tempel blok <code>say "Halo, aku Kucing!" for 2 seconds</code> (Ungu), dan blok <code>wait 2 seconds</code> (Oranye).</li>
+                                <li class="pl-1 text-blue-600 font-bold">Sekarang klik gambar Sprite 2 (Karakter Baru) di menu bawah! Ruang kerjanya akan kosong lagi.</li>
+                                <li class="pl-1">Susun balok untuk <strong>Sprite 2</strong>: Tarik blok <code>When ⚑ Clicked</code> (Kuning), tempel blok jeda <code>wait 2 seconds</code> (Oranye), lalu tempel blok balas menyapa <code>say "Hai Kucing! Senang bertemu denganmu" for 2 seconds</code> (Ungu).</li>
+                                <li class="pl-1 font-bold">Klik ikon <strong>Bendera Hijau ⚑</strong> di atas panggung (Stage). Amati urutan obrolan mereka!</li>
                             </ol>
                         </div>
                         
-                        <!-- Ilustrasi Blok -->
-                        <div class="w-full md:w-5/12 print:w-5/12 bg-white p-4 rounded-lg shadow-sm border border-slate-200 flex flex-col items-center justify-center">
-                            <div class="flex flex-col space-y-1">
-                                <div class="bg-yellow-400 text-yellow-900 font-bold px-4 py-2 rounded-t-xl rounded-br-lg border-b-4 border-yellow-500 w-48 shadow">When ⚑ clicked</div>
-                                <div class="bg-blue-500 text-white font-bold px-4 py-2 rounded-r-lg border-b-4 border-blue-600 w-48 shadow ml-2">move <span class="bg-white text-black px-2 rounded-full">50</span> steps</div>
-                                <div class="bg-purple-500 text-white font-bold px-4 py-2 rounded-r-lg rounded-bl-lg border-b-4 border-purple-600 w-48 shadow ml-2">say <span class="bg-white text-black px-2 rounded-full">Hello!</span> for <span class="bg-white text-black px-2 rounded-full">2</span> secs</div>
+                        <!-- Ilustrasi Blok 2 Sprite (Bersebelahan) -->
+                        <div class="w-full flex flex-col md:flex-row print:flex-row gap-6 justify-center">
+                            <!-- Blok Sprite 1: CLASS 'avoid-break' DITAMBAHKAN DI SINI -->
+                            <div class="bg-white p-4 rounded-lg shadow-sm border border-orange-200 flex-1 avoid-break">
+                                <h5 class="text-center font-bold text-orange-600 mb-3 border-b pb-2">Kode: Sprite 1 (Kucing)</h5>
+                                <div class="flex flex-col space-y-1 text-xs">
+                                    <div class="bg-yellow-400 text-yellow-900 font-bold px-3 py-1.5 rounded-t-lg rounded-br-md border-b-4 border-yellow-500 w-full shadow">When ⚑ clicked</div>
+                                    <div class="bg-blue-500 text-white font-bold px-3 py-1.5 rounded-r-md border-b-4 border-blue-600 w-full shadow ml-2">move <span class="bg-white text-black px-1.5 rounded-full">50</span> steps</div>
+                                    <div class="bg-purple-500 text-white font-bold px-3 py-1.5 rounded-r-md border-b-4 border-purple-600 w-full shadow ml-2">say <span class="bg-white text-black px-1.5 rounded-full">Halo, aku Kucing!</span> for <span class="bg-white text-black px-1.5 rounded-full">2</span> secs</div>
+                                    <div class="bg-orange-400 text-white font-bold px-3 py-1.5 rounded-r-md border-b-4 border-orange-600 w-full shadow ml-2">wait <span class="bg-white text-black px-1.5 rounded-full">2</span> seconds</div>
+                                    <div class="bg-purple-500 text-white font-bold px-3 py-1.5 rounded-r-md rounded-bl-md border-b-4 border-purple-600 w-full shadow ml-2">say <span class="bg-white text-black px-1.5 rounded-full">Ayo main!</span> for <span class="bg-white text-black px-1.5 rounded-full">2</span> secs</div>
+                                </div>
                             </div>
-                            <p class="text-[10px] text-center text-slate-500 mt-4 font-medium uppercase tracking-wider">Contoh Susunan Blok Scratch</p>
+
+                            <!-- Blok Sprite 2: CLASS 'avoid-break' DITAMBAHKAN DI SINI -->
+                            <div class="bg-white p-4 rounded-lg shadow-sm border border-blue-200 flex-1 avoid-break">
+                                <h5 class="text-center font-bold text-blue-600 mb-3 border-b pb-2">Kode: Sprite 2 (Teman Kucing)</h5>
+                                <div class="flex flex-col space-y-1 text-xs">
+                                    <div class="bg-yellow-400 text-yellow-900 font-bold px-3 py-1.5 rounded-t-lg rounded-br-md border-b-4 border-yellow-500 w-full shadow">When ⚑ clicked</div>
+                                    <div class="bg-orange-400 text-white font-bold px-3 py-1.5 rounded-r-md border-b-4 border-orange-600 w-full shadow ml-2">wait <span class="bg-white text-black px-1.5 rounded-full">2</span> seconds</div>
+                                    <div class="bg-purple-500 text-white font-bold px-3 py-1.5 rounded-r-md rounded-bl-md border-b-4 border-purple-600 w-full shadow ml-2">say <span class="bg-white text-black px-1.5 rounded-full">Hai Kucing! Senang bertemu..</span> for <span class="bg-white text-black px-1.5 rounded-full">2</span> secs</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
                     <div class="avoid-break">
                         <h4 class="font-bold text-lg mb-2 text-slate-800">D. Laporan & Kesimpulan</h4>
-                        <div class="space-y-6 bg-white p-5 border border-slate-200 rounded-xl shadow-sm">
+                        <div class="space-y-4 bg-white p-5 border border-slate-200 rounded-xl shadow-sm">
                             <div>
-                                <p class="font-semibold text-slate-800 mb-2 flex gap-2"><i data-lucide="help-circle" class="w-5 h-5 text-orange-500"></i> 1. Apa yang terjadi pada kucing saat Bendera Hijau diklik?</p>
-                                <div class="h-12 border-b-2 border-dashed border-slate-300"></div>
+                                <p class="font-semibold text-slate-800 mb-1 flex gap-2"><i data-lucide="help-circle" class="w-5 h-5 text-orange-500 shrink-0"></i> 1. Mengapa pada Sprite 2 harus ditambahkan blok "wait 2 seconds" sebelum blok percakapan ("say")?</p>
+                                <div class="h-8 border-b-2 border-dashed border-slate-300"></div>
                             </div>
                             <div>
-                                <p class="font-semibold text-slate-800 mb-2 flex gap-2"><i data-lucide="help-circle" class="w-5 h-5 text-orange-500"></i> 2. Apa fungsi dari blok warna Kuning (Events)? Bagaimana jika blok itu dihapus?</p>
-                                <div class="h-12 border-b-2 border-dashed border-slate-300"></div>
+                                <p class="font-semibold text-slate-800 mb-1 flex gap-2"><i data-lucide="help-circle" class="w-5 h-5 text-orange-500 shrink-0"></i> 2. Apa yang terjadi jika blok "wait 2 seconds" pada Sprite 2 tadi kamu hapus?</p>
+                                <div class="h-8 border-b-2 border-dashed border-slate-300"></div>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-slate-800 mb-1 flex gap-2"><i data-lucide="help-circle" class="w-5 h-5 text-orange-500 shrink-0"></i> 3. Coba ubah angka di blok "move 50 steps" menjadi "-50". Ke arah manakah kucing bergerak?</p>
+                                <div class="h-8 border-b-2 border-dashed border-slate-300"></div>
                             </div>
                         </div>
                     </div>
